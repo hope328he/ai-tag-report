@@ -1,0 +1,2649 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI标签质量评估报告</title>
+<style>
+  :root {
+    --primary: #2563eb;
+    --primary-light: #dbeafe;
+    --text: #1f2937;
+    --text-secondary: #6b7280;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e5e7eb;
+    --radius: 8px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans SC", sans-serif;
+    color: var(--text);
+    background: var(--bg-alt);
+    line-height: 1.7;
+  }
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 40px 24px;
+    background: var(--bg);
+    min-height: 100vh;
+    box-shadow: 0 0 40px rgba(0,0,0,0.04);
+  }
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5em;
+    padding-bottom: 0.4em;
+    border-bottom: 3px solid var(--primary);
+    color: #111827;
+  }
+  h2 {
+    font-size: 1.5rem;
+    margin-top: 2em;
+    margin-bottom: 0.6em;
+    color: #1e40af;
+    padding-left: 12px;
+    border-left: 4px solid var(--primary);
+  }
+  h3 {
+    font-size: 1.2rem;
+    margin-top: 1.6em;
+    color: #1f2937;
+  }
+  h4 {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin-top: 1.2em;
+  }
+  p { margin: 0.8em 0; }
+  a { color: var(--primary); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1em 0;
+    font-size: 0.92rem;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  th, td {
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    text-align: left;
+    vertical-align: top;
+  }
+  th {
+    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+    font-weight: 600;
+    color: #1e3a8a;
+  }
+  tr:nth-child(even) { background: #f9fafb; }
+  tr:hover { background: #eff6ff; transition: background 0.2s; }
+  ul, ol { padding-left: 1.4em; }
+  li { margin: 0.3em 0; }
+  code {
+    background: #f3f4f6;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.88em;
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, monospace;
+  }
+  blockquote {
+    margin: 1em 0;
+    padding: 0.8em 1.2em;
+    background: #fffbeb;
+    border-left: 4px solid #f59e0b;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    color: #92400e;
+  }
+  .progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary), #60a5fa);
+    width: 0%;
+    z-index: 1000;
+    transition: width 0.1s;
+  }
+  @media (max-width: 768px) {
+    .container { padding: 20px 14px; }
+    h1 { font-size: 1.5rem; }
+    h2 { font-size: 1.2rem; }
+    table { font-size: 0.85rem; }
+    th, td { padding: 8px 10px; }
+  }
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="container">
+<h1 id="ai">AI标签质量评估报告</h1>
+<h2 id="_1">一、整体评估</h2>
+<p>本次评估样本量总计1457个。整体平均得分为82.9分，其中最高分达到100分，最低分为66分。在得分分布方面，高分节目共有338个，中等分节目826个，低分节目293个。整体来看，AI标签在多数节目中能够达到合格匹配水平，但高分与低分节目在核心概念提取准确率及事实判定上存在客观差异。</p>
+<h2 id="_2">二、高分节目案例分析</h2>
+<h3 id="1-99">案例1：《圆桌派 第二季》（99分）</h3>
+<h4 id="1-vs-ai">1. 核心标签对比（人工 vs AI）</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">人工标签</th>
+<th style="text-align: left;">AI匹配标签</th>
+<th style="text-align: left;">匹配质量</th>
+<th style="text-align: left;">评价说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">人文</td>
+<td style="text-align: left;">存在主义_生死哲学</td>
+<td style="text-align: left;">中</td>
+<td style="text-align: left;">AI细化为了具体的哲学与平权议题。</td>
+</tr>
+<tr>
+<td style="text-align: left;">社会事件</td>
+<td style="text-align: left;">相关社会热点事件触发联动</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">两者均指出对现实社会事件的探讨方向。</td>
+</tr>
+<tr>
+<td style="text-align: left;">爆梗金句</td>
+<td style="text-align: left;">名台词玩梗圣经_反复引用</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">两者语义完全一致。</td>
+</tr>
+<tr>
+<td style="text-align: left;">争议话题</td>
+<td style="text-align: left;">涉及敏感社会议题</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">敏感议题与争议话题的语义方向吻合。</td>
+</tr>
+<tr>
+<td style="text-align: left;">神吐槽</td>
+<td style="text-align: left;">密集语言梗_台词包袱</td>
+<td style="text-align: left;">中</td>
+<td style="text-align: left;">语言包袱在语境上接近神吐槽概念。</td>
+</tr>
+<tr>
+<td style="text-align: left;">文学大咖</td>
+<td style="text-align: left;">文化名嘴拆解社会潜规则</td>
+<td style="text-align: left;">中</td>
+<td style="text-align: left;">AI提取了文化名嘴，未包含具体的文学领域限制。</td>
+</tr>
+<tr>
+<td style="text-align: left;">名嘴</td>
+<td style="text-align: left;">文化名嘴拆解社会潜规则</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">直接包含名嘴这一核心词汇。</td>
+</tr>
+<tr>
+<td style="text-align: left;">都市一族</td>
+<td style="text-align: left;">一线繁华都市_北上广深</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">地理背景与用户画像均符合都市一族定位。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="2-top5">2. 非核心标签TOP5举例</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">人工标签</th>
+<th style="text-align: left;">AI匹配标签</th>
+<th style="text-align: left;">匹配度</th>
+<th style="text-align: left;">评价说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">引人深思</td>
+<td style="text-align: left;">深度议题与价值观</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">深度探讨的议题对应了引人深思的内容效果。</td>
+</tr>
+<tr>
+<td style="text-align: left;">解惑</td>
+<td style="text-align: left;">获取干货涨硬知识</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">解决困惑与获取知识干货在观看动机上一致。</td>
+</tr>
+<tr>
+<td style="text-align: left;">共鸣</td>
+<td style="text-align: left;">情感共鸣与圈层认同</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">核心语义同向。</td>
+</tr>
+<tr>
+<td style="text-align: left;">求知</td>
+<td style="text-align: left;">求知提问密集_专业讨论</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">两者完全对应。</td>
+</tr>
+<tr>
+<td style="text-align: left;">社会热点</td>
+<td style="text-align: left;">相关社会热点事件触发联动</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">语义完全一致。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="299">案例2：《七根心简》（99分）</h3>
+<h4 id="1-vs-ai_1">1. 核心标签对比（人工 vs AI）</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">人工标签</th>
+<th style="text-align: left;">AI匹配标签</th>
+<th style="text-align: left;">匹配质量</th>
+<th style="text-align: left;">评价说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">冒险</td>
+<td style="text-align: left;">冒险</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">完全匹配核心一级流派。</td>
+</tr>
+<tr>
+<td style="text-align: left;">奇幻</td>
+<td style="text-align: left;">奇幻_玄幻</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">完全匹配题材分类。</td>
+</tr>
+<tr>
+<td style="text-align: left;">神秘诡谲</td>
+<td style="text-align: left;">民俗灵异_悬疑</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">准确传达了神秘相关的基调属性。</td>
+</tr>
+<tr>
+<td style="text-align: left;">团队集结</td>
+<td style="text-align: left;">正邪联盟_对抗共敌</td>
+<td style="text-align: left;">中</td>
+<td style="text-align: left;">AI用对抗共敌来解释集结行为，存在表述差别。</td>
+</tr>
+<tr>
+<td style="text-align: left;">强强爱情</td>
+<td style="text-align: left;">双强势均力敌</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">核心语义完全同向。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="2-top5_1">2. 非核心标签TOP5举例</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">人工标签</th>
+<th style="text-align: left;">AI匹配标签</th>
+<th style="text-align: left;">匹配度</th>
+<th style="text-align: left;">评价说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">爱情</td>
+<td style="text-align: left;">爱情言情</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">准确匹配题材分类。</td>
+</tr>
+<tr>
+<td style="text-align: left;">紧张刺激</td>
+<td style="text-align: left;">紧张刺激_肾上腺素</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">情绪体验标签完全一致。</td>
+</tr>
+<tr>
+<td style="text-align: left;">强情节</td>
+<td style="text-align: left;">剧情关键转折集_强情节驱动</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">核心语义完全一致。</td>
+</tr>
+<tr>
+<td style="text-align: left;">热血</td>
+<td style="text-align: left;">热血沸腾_燃炸</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">情绪基调标签完全一致。</td>
+</tr>
+<tr>
+<td style="text-align: left;">恐惧</td>
+<td style="text-align: left;">含惊恐画面_恐怖元素</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">AI补充了恐怖元素安全提示属性。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="398">案例3：《甄嬛传》（98分）</h3>
+<h4 id="1-vs-ai_2">1. 核心标签对比（人工 vs AI）</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">人工标签</th>
+<th style="text-align: left;">AI匹配标签</th>
+<th style="text-align: left;">匹配质量</th>
+<th style="text-align: left;">评价说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">宫斗</td>
+<td style="text-align: left;">古装宫斗</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">核心含义一致，AI补充了古装前缀。</td>
+</tr>
+<tr>
+<td style="text-align: left;">女性传奇</td>
+<td style="text-align: left;">大女主_成长过程型</td>
+<td style="text-align: left;">中</td>
+<td style="text-align: left;">核心方向一致，AI表述更偏向剧作结构。</td>
+</tr>
+<tr>
+<td style="text-align: left;">爽</td>
+<td style="text-align: left;">绝境翻盘逆转</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">语义同向，AI说明了爽感的剧情来源。</td>
+</tr>
+<tr>
+<td style="text-align: left;">独特性格魅力</td>
+<td style="text-align: left;">疯批反派_极致魅力</td>
+<td style="text-align: left;">中</td>
+<td style="text-align: left;">方向一致，AI补充了具体的反派人设方向。</td>
+</tr>
+<tr>
+<td style="text-align: left;">大制作</td>
+<td style="text-align: left;">S级_现象级超级大制作</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">两者对制作体量的判断一致。</td>
+</tr>
+<tr>
+<td style="text-align: left;">爱恨纠葛</td>
+<td style="text-align: left;">虐恋情深</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">核心语义高度一致。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="2-top5_2">2. 非核心标签TOP5举例</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">人工标签</th>
+<th style="text-align: left;">AI匹配标签</th>
+<th style="text-align: left;">匹配度</th>
+<th style="text-align: left;">评价说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">强情节</td>
+<td style="text-align: left;">剧情关键转折集_强情节驱动</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">核心含义同向。</td>
+</tr>
+<tr>
+<td style="text-align: left;">鸿篇巨制</td>
+<td style="text-align: left;">史诗宏大叙事</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">概括了剧群体量与风格维度。</td>
+</tr>
+<tr>
+<td style="text-align: left;">意难平</td>
+<td style="text-align: left;">意难平_遗憾结局</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">标签词汇完全一致。</td>
+</tr>
+<tr>
+<td style="text-align: left;">爱恨交织</td>
+<td style="text-align: left;">虐恋情深</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">概括了剧中的情感状态维度。</td>
+</tr>
+<tr>
+<td style="text-align: left;">角色转变</td>
+<td style="text-align: left;">大女主_成长过程型</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">大女主的成长过程对应了角色转变的含义。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="495">案例4：《扫黑行动》（95分）</h3>
+<h4 id="1-vs-ai_3">1. 核心标签对比（人工 vs AI）</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">人工标签</th>
+<th style="text-align: left;">AI匹配标签</th>
+<th style="text-align: left;">匹配质量</th>
+<th style="text-align: left;">评价说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">刑侦</td>
+<td style="text-align: left;">警察局_刑警队_审讯室</td>
+<td style="text-align: left;">中</td>
+<td style="text-align: left;">AI通过核心场景标签涵盖了刑侦要素。</td>
+</tr>
+<tr>
+<td style="text-align: left;">动作</td>
+<td style="text-align: left;">动作</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">核心题材标签完全一致。</td>
+</tr>
+<tr>
+<td style="text-align: left;">犯罪</td>
+<td style="text-align: left;">犯罪</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">核心流派标签完全一致。</td>
+</tr>
+<tr>
+<td style="text-align: left;">现实题材</td>
+<td style="text-align: left;">写实现实主义风格</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">对题材风格的分类高度一致。</td>
+</tr>
+<tr>
+<td style="text-align: left;">烧脑</td>
+<td style="text-align: left;">悬疑推理迷</td>
+<td style="text-align: left;">中</td>
+<td style="text-align: left;">AI通过目标受众画像标签映射了该特质。</td>
+</tr>
+<tr>
+<td style="text-align: left;">扫黑</td>
+<td style="text-align: left;">扫黑除恶</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">核心题材标签高度一致。</td>
+</tr>
+<tr>
+<td style="text-align: left;">高利贷</td>
+<td style="text-align: left;">金融诈骗_经济犯罪</td>
+<td style="text-align: left;">中</td>
+<td style="text-align: left;">经济犯罪涵盖高利贷概念，AI标签范围较宽。</td>
+</tr>
+<tr>
+<td style="text-align: left;">反腐</td>
+<td style="text-align: left;">权力腐败与监督</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">均命中反腐主题议题。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="2-top5_3">2. 非核心标签TOP5举例</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">人工标签</th>
+<th style="text-align: left;">AI匹配标签</th>
+<th style="text-align: left;">匹配度</th>
+<th style="text-align: left;">评价说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">紧张</td>
+<td style="text-align: left;">紧张刺激_肾上腺素</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">主观情绪基调一致。</td>
+</tr>
+<tr>
+<td style="text-align: left;">多线叙事</td>
+<td style="text-align: left;">多线平行交织</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">叙事结构标签语义高度一致。</td>
+</tr>
+<tr>
+<td style="text-align: left;">反腐类/反腐</td>
+<td style="text-align: left;">权力腐败与监督</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">直接命中反腐对应主题。</td>
+</tr>
+<tr>
+<td style="text-align: left;">打斗</td>
+<td style="text-align: left;">近身格斗_肉搏</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">动作类型标签语义完全一致。</td>
+</tr>
+<tr>
+<td style="text-align: left;">圆满结局</td>
+<td style="text-align: left;">大团圆_HE结局</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">结局类型判断完全一致。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="594">案例5：《大厨小婿》（94分）</h3>
+<h4 id="1-vs-ai_4">1. 核心标签对比（人工 vs AI）</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">人工标签</th>
+<th style="text-align: left;">AI匹配标签</th>
+<th style="text-align: left;">匹配质量</th>
+<th style="text-align: left;">评价说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">轻快</td>
+<td style="text-align: left;">轻松解压_爆米花</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">对应了节目轻快解压的情绪基调。</td>
+</tr>
+<tr>
+<td style="text-align: left;">幽默搞笑</td>
+<td style="text-align: left;">沙雕_无厘头喜剧</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">无厘头喜剧与幽默搞笑语义高度一致。</td>
+</tr>
+<tr>
+<td style="text-align: left;">快乐</td>
+<td style="text-align: left;">轻松解压_爆米花</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">轻松解压的体验与快乐的情绪方向一致。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="2-top5_4">2. 非核心标签TOP5举例</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">人工标签</th>
+<th style="text-align: left;">AI匹配标签</th>
+<th style="text-align: left;">匹配度</th>
+<th style="text-align: left;">评价说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">爱情</td>
+<td style="text-align: left;">爱情_言情</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">核心流派题材完全一致。</td>
+</tr>
+<tr>
+<td style="text-align: left;">爽</td>
+<td style="text-align: left;">极致爽感_主角光环</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">AI识别了剧集的情绪体验方向。</td>
+</tr>
+<tr>
+<td style="text-align: left;">温馨</td>
+<td style="text-align: left;">温馨治愈暖调</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">在视觉美学维度提取了该标签。</td>
+</tr>
+<tr>
+<td style="text-align: left;">治愈</td>
+<td style="text-align: left;">温馨治愈暖调</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">治愈标签在色调与情绪维度匹配。</td>
+</tr>
+<tr>
+<td style="text-align: left;">轻松下饭</td>
+<td style="text-align: left;">午晚餐下饭电子榨菜</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">包含了具体观看场景词汇。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="694">案例6：《无限超越班》（94分）</h3>
+<h4 id="1-vs-ai_5">1. 核心标签对比（人工 vs AI）</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">人工标签</th>
+<th style="text-align: left;">AI匹配标签</th>
+<th style="text-align: left;">匹配质量</th>
+<th style="text-align: left;">评价说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">竞技</td>
+<td style="text-align: left;">竞技类综艺</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">准确识别了竞技属性类型。</td>
+</tr>
+<tr>
+<td style="text-align: left;">抓马</td>
+<td style="text-align: left;">尴尬喜剧_cringe笑点</td>
+<td style="text-align: left;">中</td>
+<td style="text-align: left;">AI核心说明中提及了荒诞抓马概念。</td>
+</tr>
+<tr>
+<td style="text-align: left;">吐槽</td>
+<td style="text-align: left;">打破第四面墙吐槽</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">吐槽核心语义同向。</td>
+</tr>
+<tr>
+<td style="text-align: left;">独特性格魅力</td>
+<td style="text-align: left;">人间清醒_毒舌嘴替</td>
+<td style="text-align: left;">中</td>
+<td style="text-align: left;">AI将性格魅力具体到了导师的人设方向上。</td>
+</tr>
+<tr>
+<td style="text-align: left;">爆梗金句</td>
+<td style="text-align: left;">名台词玩梗圣经_反复引用</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">均指向节目的台词传播属性。</td>
+</tr>
+<tr>
+<td style="text-align: left;">犀利言语</td>
+<td style="text-align: left;">人间清醒一针见血</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">核心语义完全同向。</td>
+</tr>
+<tr>
+<td style="text-align: left;">表演</td>
+<td style="text-align: left;">影帝影后同台对飙期待值拉满</td>
+<td style="text-align: left;">中</td>
+<td style="text-align: left;">AI将表演概念具体到了演员对戏的场景标签。</td>
+</tr>
+<tr>
+<td style="text-align: left;">TVB</td>
+<td style="text-align: left;">复古港风_胶片滤镜</td>
+<td style="text-align: left;">中</td>
+<td style="text-align: left;">AI通过港风标签组合涵盖了厂牌属性。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="2-top5_5">2. 非核心标签TOP5举例</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">人工标签</th>
+<th style="text-align: left;">AI匹配标签</th>
+<th style="text-align: left;">匹配度</th>
+<th style="text-align: left;">评价说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">幽默搞笑</td>
+<td style="text-align: left;">沙雕爆笑_腹肌缺失</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">语义基本一致。</td>
+</tr>
+<tr>
+<td style="text-align: left;">轻松下饭</td>
+<td style="text-align: left;">午晚餐下饭电子榨菜</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">核心语义同向，具备场景感。</td>
+</tr>
+<tr>
+<td style="text-align: left;">娱乐行业</td>
+<td style="text-align: left;">演艺圈_内娱_选秀</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">核心语义完全一致。</td>
+</tr>
+<tr>
+<td style="text-align: left;">真人秀</td>
+<td style="text-align: left;">综艺_真人秀</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">综艺类型完全对应。</td>
+</tr>
+<tr>
+<td style="text-align: left;">老师</td>
+<td style="text-align: left;">师徒情_年上年下</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">师徒情标签包含了老师这一身份概念。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="794">案例7：《鬼灭之刃》（94分）</h3>
+<h4 id="1-vs-ai_6">1. 核心标签对比（人工 vs AI）</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">人工标签</th>
+<th style="text-align: left;">AI匹配标签</th>
+<th style="text-align: left;">匹配质量</th>
+<th style="text-align: left;">评价说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">奇幻</td>
+<td style="text-align: left;">奇幻_玄幻</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">核心语义高度一致。</td>
+</tr>
+<tr>
+<td style="text-align: left;">动作</td>
+<td style="text-align: left;">动作</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">核心语义高度一致。</td>
+</tr>
+<tr>
+<td style="text-align: left;">热血</td>
+<td style="text-align: left;">热血沸腾_燃炸</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">核心语义高度一致。</td>
+</tr>
+<tr>
+<td style="text-align: left;">命运抗争</td>
+<td style="text-align: left;">救赎与被救赎</td>
+<td style="text-align: left;">中</td>
+<td style="text-align: left;">AI侧重人物互动，人工侧重个体命运抗争。</td>
+</tr>
+<tr>
+<td style="text-align: left;">突破极限</td>
+<td style="text-align: left;">主角觉醒_能力爆发</td>
+<td style="text-align: left;">中</td>
+<td style="text-align: left;">AI通过能力爆发标签覆盖了突破极限的行为。</td>
+</tr>
+<tr>
+<td style="text-align: left;">团魂</td>
+<td style="text-align: left;">团队高光胜利时刻</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">核心语义完全同向。</td>
+</tr>
+<tr>
+<td style="text-align: left;">英雄成长</td>
+<td style="text-align: left;">主角觉醒_能力爆发</td>
+<td style="text-align: left;">中</td>
+<td style="text-align: left;">主角能力觉醒对应英雄成长的部分特征。</td>
+</tr>
+<tr>
+<td style="text-align: left;">除妖捉鬼</td>
+<td style="text-align: left;">民俗恐怖_地方怪谈</td>
+<td style="text-align: left;">中</td>
+<td style="text-align: left;">缺乏直接杀鬼标签，由怪谈氛围标签覆盖。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="2-top5_6">2. 非核心标签TOP5举例</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">人工标签</th>
+<th style="text-align: left;">AI匹配标签</th>
+<th style="text-align: left;">匹配度</th>
+<th style="text-align: left;">评价说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">爽</td>
+<td style="text-align: left;">类型片商业爽片</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">语义完全同向。</td>
+</tr>
+<tr>
+<td style="text-align: left;">燃</td>
+<td style="text-align: left;">热血沸腾_燃炸</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">情绪匹配度高。</td>
+</tr>
+<tr>
+<td style="text-align: left;">虐心</td>
+<td style="text-align: left;">悲伤催泪_虐心</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">情绪匹配度高。</td>
+</tr>
+<tr>
+<td style="text-align: left;">绝地反击</td>
+<td style="text-align: left;">绝境翻盘逆转</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">语义完全一致。</td>
+</tr>
+<tr>
+<td style="text-align: left;">线性叙事</td>
+<td style="text-align: left;">线性顺叙</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">语义高度一致。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="893">案例8：《乡村爱情》（93分）</h3>
+<h4 id="1-vs-ai_7">1. 核心标签对比（人工 vs AI）</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">人工标签</th>
+<th style="text-align: left;">AI匹配标签</th>
+<th style="text-align: left;">匹配质量</th>
+<th style="text-align: left;">评价说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">喜剧作品</td>
+<td style="text-align: left;">喜剧</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">提取了喜剧这一流派。</td>
+</tr>
+<tr>
+<td style="text-align: left;">乡村</td>
+<td style="text-align: left;">农村_乡野_田园</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">核心语义同向，包含了具体的地理环境。</td>
+</tr>
+<tr>
+<td style="text-align: left;">烟火气</td>
+<td style="text-align: left;">破败写实_烟火气</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">直接包含了烟火气特征词汇。</td>
+</tr>
+<tr>
+<td style="text-align: left;">东北喜剧</td>
+<td style="text-align: left;">东北话</td>
+<td style="text-align: left;">中</td>
+<td style="text-align: left;">将地域特征体现在对白语种中，拆分了标签。</td>
+</tr>
+<tr>
+<td style="text-align: left;">乡里乡亲</td>
+<td style="text-align: left;">底层抱团取暖</td>
+<td style="text-align: left;">中</td>
+<td style="text-align: left;">AI从社会关系视角侧面反映了乡邻状态。</td>
+</tr>
+<tr>
+<td style="text-align: left;">普通人的喜怒哀乐</td>
+<td style="text-align: left;">小人物的挣扎与尊严</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">与草根小人物条目语义一致。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="2-top5_7">2. 非核心标签TOP5举例</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">人工标签</th>
+<th style="text-align: left;">AI匹配标签</th>
+<th style="text-align: left;">匹配度</th>
+<th style="text-align: left;">评价说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">家庭</td>
+<td style="text-align: left;">家庭_伦理</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">识别了家庭元素维度。</td>
+</tr>
+<tr>
+<td style="text-align: left;">幽默搞笑</td>
+<td style="text-align: left;">轻松解压_爆米花</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">AI从情绪体验角度给出了标签。</td>
+</tr>
+<tr>
+<td style="text-align: left;">乡土</td>
+<td style="text-align: left;">农村_乡野_田园</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">均指向农村题材方向。</td>
+</tr>
+<tr>
+<td style="text-align: left;">快乐</td>
+<td style="text-align: left;">轻松解压_爆米花</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">核心情绪体验方向一致。</td>
+</tr>
+<tr>
+<td style="text-align: left;">轻松下饭</td>
+<td style="text-align: left;">午晚餐下饭电子榨菜</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">包含了具体的网络使用场景词汇。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="992">案例9：《绿皮书》（92分）</h3>
+<h4 id="1-vs-ai_8">1. 核心标签对比（人工 vs AI）</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">人工标签</th>
+<th style="text-align: left;">AI匹配标签</th>
+<th style="text-align: left;">匹配质量</th>
+<th style="text-align: left;">评价说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">友情</td>
+<td style="text-align: left;">双男主_兄弟情bromance</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">准确捕捉了双男主友情标签。</td>
+</tr>
+<tr>
+<td style="text-align: left;">社会现实</td>
+<td style="text-align: left;">社会现实</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">标签文本完全一致。</td>
+</tr>
+<tr>
+<td style="text-align: left;">温馨治愈</td>
+<td style="text-align: left;">温馨治愈_心灵按摩</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">核心语义完全一致。</td>
+</tr>
+<tr>
+<td style="text-align: left;">争议话题</td>
+<td style="text-align: left;">涉及敏感社会议题</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">语义基本一致。</td>
+</tr>
+<tr>
+<td style="text-align: left;">种族问题</td>
+<td style="text-align: left;">含种族歧视内容_注意</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">覆盖了种族隔离的议题方向。</td>
+</tr>
+<tr>
+<td style="text-align: left;">公路</td>
+<td style="text-align: left;">公路片</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">准确识别了公路片流派。</td>
+</tr>
+<tr>
+<td style="text-align: left;">真实事件</td>
+<td style="text-align: left;">真实历史事件改编</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">标签事实对齐准确。</td>
+</tr>
+<tr>
+<td style="text-align: left;">人性</td>
+<td style="text-align: left;">存在主义_生死哲学</td>
+<td style="text-align: left;">中</td>
+<td style="text-align: left;">通过价值观维度涵盖了对人性的相关讨论。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="2-top5_8">2. 非核心标签TOP5举例</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">人工标签</th>
+<th style="text-align: left;">AI匹配标签</th>
+<th style="text-align: left;">匹配度</th>
+<th style="text-align: left;">评价说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">喜剧作品</td>
+<td style="text-align: left;">喜剧</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">完全对应喜剧类型。</td>
+</tr>
+<tr>
+<td style="text-align: left;">感人</td>
+<td style="text-align: left;">感动共鸣_真实触动</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">表达了电影的情感方向。</td>
+</tr>
+<tr>
+<td style="text-align: left;">引人深思</td>
+<td style="text-align: left;">社会议题向_引发广泛讨论辩论</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">表达了引发社会议题讨论的特性。</td>
+</tr>
+<tr>
+<td style="text-align: left;">温馨</td>
+<td style="text-align: left;">温馨治愈暖调</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">拆分到了视觉维度的温馨。</td>
+</tr>
+<tr>
+<td style="text-align: left;">治愈</td>
+<td style="text-align: left;">温馨治愈_心灵按摩</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">完全匹配治愈的情感语境。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="10292">案例10：《欢乐颂2》（92分）</h3>
+<h4 id="1-vs-ai_9">1. 核心标签对比（人工 vs AI）</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">人工标签</th>
+<th style="text-align: left;">AI匹配标签</th>
+<th style="text-align: left;">匹配质量</th>
+<th style="text-align: left;">评价说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">爱情</td>
+<td style="text-align: left;">爱情_言情</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">核心含义一致，归入标准分类。</td>
+</tr>
+<tr>
+<td style="text-align: left;">友情</td>
+<td style="text-align: left;">双女主_闺蜜情</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">识别了剧集的女性友情方向。</td>
+</tr>
+<tr>
+<td style="text-align: left;">都市</td>
+<td style="text-align: left;">一线繁华都市_北上广深</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">识别了都市背景概念。</td>
+</tr>
+<tr>
+<td style="text-align: left;">恋爱群像</td>
+<td style="text-align: left;">爱情_言情</td>
+<td style="text-align: left;">中</td>
+<td style="text-align: left;">涵盖了恋爱元素，未组合为独立的恋爱群像标签。</td>
+</tr>
+<tr>
+<td style="text-align: left;">女性成长</td>
+<td style="text-align: left;">女性成长_职场困境</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">包含了女性成长核心词汇。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="2-top5_9">2. 非核心标签TOP5举例</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">人工标签</th>
+<th style="text-align: left;">AI匹配标签</th>
+<th style="text-align: left;">匹配度</th>
+<th style="text-align: left;">评价说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">共鸣</td>
+<td style="text-align: left;">焦虑共鸣_现实压迫感</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">核心一致，给出了共鸣来源。</td>
+</tr>
+<tr>
+<td style="text-align: left;">多线叙事</td>
+<td style="text-align: left;">多线平行交织</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">表述高度一致。</td>
+</tr>
+<tr>
+<td style="text-align: left;">闺蜜情类/姐妹情深</td>
+<td style="text-align: left;">双女主_闺蜜情</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">表达了女性情谊概念。</td>
+</tr>
+<tr>
+<td style="text-align: left;">开放式结局</td>
+<td style="text-align: left;">开放式结局_留白</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">判断完全一致。</td>
+</tr>
+<tr>
+<td style="text-align: left;">群像</td>
+<td style="text-align: left;">配角与群像人设</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">识别了群像剧特质。</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_3">三、低分节目案例分析</h2>
+<h3 id="166">案例1：《掌心》（66分）</h3>
+<h4 id="1-vs-ai_10">1. 核心标签对比（人工 vs AI）</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">人工标签</th>
+<th style="text-align: left;">AI匹配标签</th>
+<th style="text-align: left;">匹配质量</th>
+<th style="text-align: left;">评价说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">悬疑</td>
+<td style="text-align: left;">悬疑</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">AI将悬疑列为一级流派，判定准确。</td>
+</tr>
+<tr>
+<td style="text-align: left;">女性传奇</td>
+<td style="text-align: left;">清醒独立女性_女性力量</td>
+<td style="text-align: left;">中</td>
+<td style="text-align: left;">AI识别到女性力量，但未能完整表达人物传奇性与命运起伏。</td>
+</tr>
+<tr>
+<td style="text-align: left;">强情节</td>
+<td style="text-align: left;">全程高能_快节奏密集</td>
+<td style="text-align: left;">中</td>
+<td style="text-align: left;">AI偏向节奏描述，和情节结构本身存在粒度差异。</td>
+</tr>
+<tr>
+<td style="text-align: left;">古风</td>
+<td style="text-align: left;">古风纯音乐_琴箫笛</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">AI在音乐与美术维度均体现了古风属性。</td>
+</tr>
+<tr>
+<td style="text-align: left;">探寻真相</td>
+<td style="text-align: left;">冤情昭雪_真相大白</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">AI明确标注了真相大白，覆盖了对应叙事目标。</td>
+</tr>
+<tr>
+<td style="text-align: left;">姐妹情深</td>
+<td style="text-align: left;">(无)</td>
+<td style="text-align: left;">无</td>
+<td style="text-align: left;">AI完全遗漏了该人物关系维度的标签。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="2-top5_10">2. 非核心坏标签TOP5举例</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">人工标签</th>
+<th style="text-align: left;">AI匹配标签</th>
+<th style="text-align: left;">匹配度</th>
+<th style="text-align: left;">问题说明</th>
+<th>根因分析</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">闺蜜情类/姐妹情深</td>
+<td style="text-align: left;">(无)</td>
+<td style="text-align: left;">无</td>
+<td style="text-align: left;">遗漏女性同盟关系标签。</td>
+<td>AI模型对特定人物关系的提取存在缺失。</td>
+</tr>
+<tr>
+<td style="text-align: left;">高冷</td>
+<td style="text-align: left;">(无)</td>
+<td style="text-align: left;">无</td>
+<td style="text-align: left;">遗漏了冷感性格特征。</td>
+<td>AI未覆盖该维度的人设标签。</td>
+</tr>
+<tr>
+<td style="text-align: left;">插叙叙事</td>
+<td style="text-align: left;">章回体_单元独立</td>
+<td style="text-align: left;">低</td>
+<td style="text-align: left;">叙事结构判断事实冲突。</td>
+<td>AI错误将插叙识别为了单元章回体结构。</td>
+</tr>
+<tr>
+<td style="text-align: left;">线性叙事</td>
+<td style="text-align: left;">章回体_单元独立</td>
+<td style="text-align: left;">低</td>
+<td style="text-align: left;">叙事结构判断事实冲突。</td>
+<td>AI将主线顺序推进误判为单元独立结构。</td>
+</tr>
+<tr>
+<td style="text-align: left;">神医</td>
+<td style="text-align: left;">法医_刑侦技术</td>
+<td style="text-align: left;">低</td>
+<td style="text-align: left;">职业身份判断错误。</td>
+<td>AI将古装神医过度泛化延伸为了现代法医与刑侦。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="3">3. 其他问题</h4>
+<ul>
+<li>幻觉标签问题：AI产生了“地下世界_废弃工厂”标签，与古风设定严重事实冲突；产生了“极致反差滑稽”与“寻求治愈缓解现实焦虑”等缺乏人工标签依据的情绪标签。</li>
+<li>噪声等级：中</li>
+</ul>
+<h3 id="267">案例2：《许你浮生若梦》（67分）</h3>
+<h4 id="1-vs-ai_11">1. 核心标签对比（人工 vs AI）</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">人工标签</th>
+<th style="text-align: left;">AI匹配标签</th>
+<th style="text-align: left;">匹配质量</th>
+<th style="text-align: left;">评价说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">爱情</td>
+<td style="text-align: left;">爱情_言情</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">准确识别了核心题材。</td>
+</tr>
+<tr>
+<td style="text-align: left;">浪漫甜蜜</td>
+<td style="text-align: left;">唯美浪漫_糖分超标</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">明确覆盖了高糖情绪体验。</td>
+</tr>
+<tr>
+<td style="text-align: left;">好磕</td>
+<td style="text-align: left;">CP向磕糖弹幕</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">从互动角度标出了磕糖属性。</td>
+</tr>
+<tr>
+<td style="text-align: left;">情感波折</td>
+<td style="text-align: left;">虐心误会_苦等重逢</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">标签词汇对应了情感反复波折的表现。</td>
+</tr>
+<tr>
+<td style="text-align: left;">多角恋</td>
+<td style="text-align: left;">(无)</td>
+<td style="text-align: left;">无</td>
+<td style="text-align: left;">AI完全未提取多人情感关系结构。</td>
+</tr>
+<tr>
+<td style="text-align: left;">兄弟为爱反目成仇</td>
+<td style="text-align: left;">双雄宿敌终极对决</td>
+<td style="text-align: left;">低</td>
+<td style="text-align: left;">AI仅识别到对立关系，未呈现兄弟基础与爱情动因。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="2-top5_11">2. 非核心坏标签TOP5举例</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">人工标签</th>
+<th style="text-align: left;">AI匹配标签</th>
+<th style="text-align: left;">匹配度</th>
+<th style="text-align: left;">问题说明</th>
+<th>根因分析</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">爱情修罗场</td>
+<td style="text-align: left;">(无)</td>
+<td style="text-align: left;">无</td>
+<td style="text-align: left;">遗漏了情感竞争关系标签。</td>
+<td>AI未能识别出多方情感竞争的特定组合状态。</td>
+</tr>
+<tr>
+<td style="text-align: left;">第三人称叙事</td>
+<td style="text-align: left;">(无)</td>
+<td style="text-align: left;">无</td>
+<td style="text-align: left;">遗漏了视角标签。</td>
+<td>AI不具备提取对应叙事视角的规则或能力。</td>
+</tr>
+<tr>
+<td style="text-align: left;">线性叙事</td>
+<td style="text-align: left;">嵌套叙事_故事中的故事</td>
+<td style="text-align: left;">低</td>
+<td style="text-align: left;">叙事结构判断相反。</td>
+<td>AI错误地将单线叙事判断成了复杂的嵌套结构。</td>
+</tr>
+<tr>
+<td style="text-align: left;">兄弟友情类/兄弟为爱反目成仇</td>
+<td style="text-align: left;">双雄宿敌终极对决</td>
+<td style="text-align: left;">低</td>
+<td style="text-align: left;">核心关系起因偏离。</td>
+<td>AI未能识别反目的前置条件，仅提取了对立结果。</td>
+</tr>
+<tr>
+<td style="text-align: left;">圆满结局</td>
+<td style="text-align: left;">悲喜交加_复杂结局</td>
+<td style="text-align: left;">低</td>
+<td style="text-align: left;">结局性质判断事实冲突。</td>
+<td>AI对结局的文本理解存在严重误差。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="3_1">3. 其他问题</h4>
+<ul>
+<li>幻觉标签问题：AI生成了“扫黑除恶”、“近代革命_红色历史”、“谍战_潜伏_间谍”等标签，与民国爱情剧的实际类型严重不符。产生了“微博热搜霸榜”、“五毛特效”等未经证实的传播效果或主观评价标签。</li>
+<li>噪声等级：高</li>
+</ul>
+<h3 id="3568">案例3：《大蛇5：怪兽都市》（68分）</h3>
+<h4 id="1-vs-ai_12">1. 核心标签对比（人工 vs AI）</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">人工标签</th>
+<th style="text-align: left;">AI匹配标签</th>
+<th style="text-align: left;">匹配质量</th>
+<th style="text-align: left;">评价说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">惊悚</td>
+<td style="text-align: left;">惊悚</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">匹配了惊悚流派。</td>
+</tr>
+<tr>
+<td style="text-align: left;">灾难</td>
+<td style="text-align: left;">灾难</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">匹配了灾难流派。</td>
+</tr>
+<tr>
+<td style="text-align: left;">紧张刺激</td>
+<td style="text-align: left;">紧张刺激_肾上腺素</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">情绪体验判断一致。</td>
+</tr>
+<tr>
+<td style="text-align: left;">营救</td>
+<td style="text-align: left;">(无)</td>
+<td style="text-align: left;">无</td>
+<td style="text-align: left;">AI完全遗漏了营救相关动作标签。</td>
+</tr>
+<tr>
+<td style="text-align: left;">怪兽猛兽</td>
+<td style="text-align: left;">怪兽入侵_巨兽</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">物种题材对齐准确。</td>
+</tr>
+<tr>
+<td style="text-align: left;">蛇</td>
+<td style="text-align: left;">妖怪_神兽_异兽</td>
+<td style="text-align: left;">低</td>
+<td style="text-align: left;">AI未能提取出核心物种实体词“蛇”。</td>
+</tr>
+<tr>
+<td style="text-align: left;">绝地求生</td>
+<td style="text-align: left;">生存恐怖_密闭空间</td>
+<td style="text-align: left;">中</td>
+<td style="text-align: left;">求生方向一致，但AI增加了密闭空间等具体场景限制。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="2-top5_12">2. 非核心坏标签TOP5举例</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">人工标签</th>
+<th style="text-align: left;">AI匹配标签</th>
+<th style="text-align: left;">匹配度</th>
+<th style="text-align: left;">问题说明</th>
+<th>根因分析</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">冒险</td>
+<td style="text-align: left;">(无)</td>
+<td style="text-align: left;">无</td>
+<td style="text-align: left;">缺失冒险题材提取。</td>
+<td>AI未覆盖探险相关的大类概念。</td>
+</tr>
+<tr>
+<td style="text-align: left;">线性叙事</td>
+<td style="text-align: left;">多线平行交织</td>
+<td style="text-align: left;">低</td>
+<td style="text-align: left;">叙事结构判断冲突。</td>
+<td>AI将单线叙事错误识别为多线结构。</td>
+</tr>
+<tr>
+<td style="text-align: left;">人物与环境冲突</td>
+<td style="text-align: left;">环境保护_气候危机</td>
+<td style="text-align: left;">低</td>
+<td style="text-align: left;">冲突对象错位。</td>
+<td>AI将灾难求生生硬匹配到了环保价值观议题。</td>
+</tr>
+<tr>
+<td style="text-align: left;">灾难降临</td>
+<td style="text-align: left;">灾难</td>
+<td style="text-align: left;">低</td>
+<td style="text-align: left;">粒度差异大。</td>
+<td>AI仅提取大类，未体现事件爆发节点。</td>
+</tr>
+<tr>
+<td style="text-align: left;">离奇变故</td>
+<td style="text-align: left;">灾难</td>
+<td style="text-align: left;">低</td>
+<td style="text-align: left;">归纳差异。</td>
+<td>AI未提取到变异等具体的离奇特质。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="3_2">3. 其他问题</h4>
+<ul>
+<li>幻觉标签问题：AI生成了“极难植入_严肃历史_硬科幻”、“科技伦理_AI威胁与机遇”等标签，与B级网络怪兽电影的事实严重不符。</li>
+<li>噪声等级：高</li>
+</ul>
+<h3 id="468">案例4：《狒狒养龙记》（68分）</h3>
+<h4 id="1-vs-ai_13">1. 核心标签对比（人工 vs AI）</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">人工标签</th>
+<th style="text-align: left;">AI匹配标签</th>
+<th style="text-align: left;">匹配质量</th>
+<th style="text-align: left;">评价说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">解说实况</td>
+<td style="text-align: left;">解说视频二次传播潜力大</td>
+<td style="text-align: left;">中</td>
+<td style="text-align: left;">提及了解说概念，但AI将其误判为具传播潜力的影视剧。</td>
+</tr>
+<tr>
+<td style="text-align: left;">奇幻</td>
+<td style="text-align: left;">奇幻_玄幻</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">核心题材类型一致。</td>
+</tr>
+<tr>
+<td style="text-align: left;">探险</td>
+<td style="text-align: left;">(无)</td>
+<td style="text-align: left;">无</td>
+<td style="text-align: left;">AI完全遗漏探险主题标签。</td>
+</tr>
+<tr>
+<td style="text-align: left;">养成游戏</td>
+<td style="text-align: left;">热门游戏改编</td>
+<td style="text-align: left;">低</td>
+<td style="text-align: left;">节目形态判断错误。</td>
+</tr>
+<tr>
+<td style="text-align: left;">冒险</td>
+<td style="text-align: left;">(无)</td>
+<td style="text-align: left;">无</td>
+<td style="text-align: left;">未覆盖冒险元素。</td>
+</tr>
+<tr>
+<td style="text-align: left;">史前动物</td>
+<td style="text-align: left;">(无)</td>
+<td style="text-align: left;">无</td>
+<td style="text-align: left;">遗漏关键背景设定。</td>
+</tr>
+<tr>
+<td style="text-align: left;">恐龙</td>
+<td style="text-align: left;">怪兽入侵_巨兽</td>
+<td style="text-align: left;">低</td>
+<td style="text-align: left;">将恐龙泛化为了具有入侵性质的怪兽。</td>
+</tr>
+<tr>
+<td style="text-align: left;">灭绝动物</td>
+<td style="text-align: left;">(无)</td>
+<td style="text-align: left;">无</td>
+<td style="text-align: left;">未提取相关物种标签。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="2-top5_13">2. 非核心坏标签TOP5举例</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">人工标签</th>
+<th style="text-align: left;">AI匹配标签</th>
+<th style="text-align: left;">匹配度</th>
+<th style="text-align: left;">问题说明</th>
+<th>根因分析</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">好奇</td>
+<td style="text-align: left;">(无)</td>
+<td style="text-align: left;">无</td>
+<td style="text-align: left;">情绪标签缺失。</td>
+<td>AI未能识别面向儿童群体的探索情绪。</td>
+</tr>
+<tr>
+<td style="text-align: left;">3～6岁</td>
+<td style="text-align: left;">(无)</td>
+<td style="text-align: left;">无</td>
+<td style="text-align: left;">受众画像缺失。</td>
+<td>AI忽略了学龄前儿童这一核心定位群体。</td>
+</tr>
+<tr>
+<td style="text-align: left;">养成游戏</td>
+<td style="text-align: left;">养成系_从小看大</td>
+<td style="text-align: left;">低</td>
+<td style="text-align: left;">语义完全偏移。</td>
+<td>AI将游戏品类词汇曲解为人物情感养成关系。</td>
+</tr>
+<tr>
+<td style="text-align: left;">恐龙</td>
+<td style="text-align: left;">怪兽入侵_巨兽</td>
+<td style="text-align: left;">低</td>
+<td style="text-align: left;">实体识别偏离。</td>
+<td>再次将特定物种泛化为通用怪兽。</td>
+</tr>
+<tr>
+<td style="text-align: left;">解说实况</td>
+<td style="text-align: left;">热门游戏改编</td>
+<td style="text-align: left;">低</td>
+<td style="text-align: left;">内容形态误判。</td>
+<td>AI将实况视频判断为了游戏改编剧集。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="3_3">3. 其他问题</h4>
+<ul>
+<li>幻觉标签问题：AI判定该内容为“微短剧_横屏”以及包含“大女主_成长过程型”剧情，与游戏解说实况的属性存在根本冲突。生成了“含较多血腥暴力画面”标签，严重错判了儿童向内容的安全分级。</li>
+<li>噪声等级：高</li>
+</ul>
+<h3 id="5-68">案例5：《捷德奥特曼 中配版》（68分）</h3>
+<h4 id="1-vs-ai_14">1. 核心标签对比（人工 vs AI）</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">人工标签</th>
+<th style="text-align: left;">AI匹配标签</th>
+<th style="text-align: left;">匹配质量</th>
+<th style="text-align: left;">评价说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">动作</td>
+<td style="text-align: left;">动作</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">准确提取动作流派。</td>
+</tr>
+<tr>
+<td style="text-align: left;">科幻</td>
+<td style="text-align: left;">科幻</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">准确提取科幻流派。</td>
+</tr>
+<tr>
+<td style="text-align: left;">怪兽</td>
+<td style="text-align: left;">怪兽入侵_巨兽</td>
+<td style="text-align: left;">中</td>
+<td style="text-align: left;">提取了怪兽词汇，补充了入侵情境。</td>
+</tr>
+<tr>
+<td style="text-align: left;">燃</td>
+<td style="text-align: left;">热血沸腾_燃炸</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">情绪匹配完全同向。</td>
+</tr>
+<tr>
+<td style="text-align: left;">物种冲突</td>
+<td style="text-align: left;">(无)</td>
+<td style="text-align: left;">无</td>
+<td style="text-align: left;">遗漏宏观冲突概念。</td>
+</tr>
+<tr>
+<td style="text-align: left;">守护地球</td>
+<td style="text-align: left;">(无)</td>
+<td style="text-align: left;">无</td>
+<td style="text-align: left;">忽略了特摄剧核心动机设定。</td>
+</tr>
+<tr>
+<td style="text-align: left;">救世</td>
+<td style="text-align: left;">(无)</td>
+<td style="text-align: left;">无</td>
+<td style="text-align: left;">缺失救世语义相关标签。</td>
+</tr>
+<tr>
+<td style="text-align: left;">真人特摄</td>
+<td style="text-align: left;">电视动画</td>
+<td style="text-align: left;">低</td>
+<td style="text-align: left;">内容形式发生了基础分类错误。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="2-top5_14">2. 非核心坏标签TOP5举例</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">人工标签</th>
+<th style="text-align: left;">AI匹配标签</th>
+<th style="text-align: left;">匹配度</th>
+<th style="text-align: left;">问题说明</th>
+<th>根因分析</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">紧张</td>
+<td style="text-align: left;">(无)</td>
+<td style="text-align: left;">无</td>
+<td style="text-align: left;">悬疑情绪标签缺失。</td>
+<td>AI未覆盖单纯的紧张感维度。</td>
+</tr>
+<tr>
+<td style="text-align: left;">神秘现象</td>
+<td style="text-align: left;">(无)</td>
+<td style="text-align: left;">无</td>
+<td style="text-align: left;">元素提取遗漏。</td>
+<td>AI未涵盖神秘现象等剧情相关标签。</td>
+</tr>
+<tr>
+<td style="text-align: left;">团队集结</td>
+<td style="text-align: left;">(无)</td>
+<td style="text-align: left;">无</td>
+<td style="text-align: left;">动作机制遗漏。</td>
+<td>AI未体现团队集结相关的行为标签。</td>
+</tr>
+<tr>
+<td style="text-align: left;">战神</td>
+<td style="text-align: left;">(无)</td>
+<td style="text-align: left;">无</td>
+<td style="text-align: left;">角色定位缺失。</td>
+<td>AI未提取到战神维度的描述。</td>
+</tr>
+<tr>
+<td style="text-align: left;">儿童电视/真人特摄</td>
+<td style="text-align: left;">电视动画</td>
+<td style="text-align: left;">低</td>
+<td style="text-align: left;">作品分类事实冲突。</td>
+<td>AI无法准确区分真人特摄与纯电视动画的差异。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="3_4">3. 其他问题</h4>
+<ul>
+<li>幻觉标签问题：AI生成了“极易植入_现代都市职场”与“职场_办公室_格子间”标签，对特摄剧的场景与商业模式进行了完全脱离事实的臆造判断。</li>
+<li>噪声等级：中</li>
+</ul>
+<h3 id="668">案例6：《相逢时节》（68分）</h3>
+<h4 id="1-vs-ai_15">1. 核心标签对比（人工 vs AI）</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">人工标签</th>
+<th style="text-align: left;">AI匹配标签</th>
+<th style="text-align: left;">匹配质量</th>
+<th style="text-align: left;">评价说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">亲情</td>
+<td style="text-align: left;">亲子关系_代际矛盾</td>
+<td style="text-align: left;">中</td>
+<td style="text-align: left;">AI聚焦了具体的负面冲突，存在粒度差异。</td>
+</tr>
+<tr>
+<td style="text-align: left;">家庭</td>
+<td style="text-align: left;">家庭_伦理</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">核心语义完全一致。</td>
+</tr>
+<tr>
+<td style="text-align: left;">再续前缘</td>
+<td style="text-align: left;">破镜重圆</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">语义完全对齐。</td>
+</tr>
+<tr>
+<td style="text-align: left;">姐弟情</td>
+<td style="text-align: left;">(无)</td>
+<td style="text-align: left;">无</td>
+<td style="text-align: left;">AI未提取特定关系标签。</td>
+</tr>
+<tr>
+<td style="text-align: left;">爱恨纠葛</td>
+<td style="text-align: left;">宿命之敌</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">宿命之敌涵盖了情感纠葛概念。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="2-top5_15">2. 非核心坏标签TOP5举例</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">人工标签</th>
+<th style="text-align: left;">AI匹配标签</th>
+<th style="text-align: left;">匹配度</th>
+<th style="text-align: left;">问题说明</th>
+<th>根因分析</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">插叙叙事</td>
+<td style="text-align: left;">(无)</td>
+<td style="text-align: left;">无</td>
+<td style="text-align: left;">叙事方式遗漏。</td>
+<td>AI未能提取插叙结构标签。</td>
+</tr>
+<tr>
+<td style="text-align: left;">情感冲突</td>
+<td style="text-align: left;">情感与理智冲突</td>
+<td style="text-align: left;">无</td>
+<td style="text-align: left;">未输出直接对应的标签。</td>
+<td>标签散落在原生家庭等其他维度中，未独立成词。</td>
+</tr>
+<tr>
+<td style="text-align: left;">狗血</td>
+<td style="text-align: left;">争议反转向_越骂越火天然热搜体质</td>
+<td style="text-align: left;">低</td>
+<td style="text-align: left;">替代标签存在偏差。</td>
+<td>AI未直接输出狗血词汇，而是用外围网络争议词替代。</td>
+</tr>
+<tr>
+<td style="text-align: left;">意外发现</td>
+<td style="text-align: left;">掉马甲_隐藏大佬身份机制</td>
+<td style="text-align: left;">低</td>
+<td style="text-align: left;">剧情点严重发散。</td>
+<td>AI将现实向悬疑点套用了网文的掉马甲机制。</td>
+</tr>
+<tr>
+<td style="text-align: left;">线性叙事</td>
+<td style="text-align: left;">多线平行交织</td>
+<td style="text-align: left;">低</td>
+<td style="text-align: left;">结构判断不一致。</td>
+<td>AI在单线与多线的分类上出现判断失误。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="3_5">3. 其他问题</h4>
+<ul>
+<li>幻觉标签问题：AI输出了“大团圆_HE结局”，与该剧包含角色入狱等复杂结局事实严重冲突。输出了“含较多血腥暴力画面”与“病娇_极端执念_偏执迷恋”，不符合当代都市正剧的内容事实。</li>
+<li>噪声等级：中</li>
+</ul>
+<h3 id="768">案例7：《鹅绒雪》（68分）</h3>
+<h4 id="1-vs-ai_16">1. 核心标签对比（人工 vs AI）</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">人工标签</th>
+<th style="text-align: left;">AI匹配标签</th>
+<th style="text-align: left;">匹配质量</th>
+<th style="text-align: left;">评价说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">爱情</td>
+<td style="text-align: left;">爱情_言情</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">题材流派判定一致。</td>
+</tr>
+<tr>
+<td style="text-align: left;">强情节</td>
+<td style="text-align: left;">全程高能_快节奏密集</td>
+<td style="text-align: left;">中</td>
+<td style="text-align: left;">AI用节奏词汇描述了强情节感受，粒度存在差异。</td>
+</tr>
+<tr>
+<td style="text-align: left;">浪漫甜蜜</td>
+<td style="text-align: left;">唯美浪漫_糖分超标</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">语义高度对应。</td>
+</tr>
+<tr>
+<td style="text-align: left;">好磕</td>
+<td style="text-align: left;">CP糖分向_磕糖嗑到上头</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">明确标注了CP消费卖点。</td>
+</tr>
+<tr>
+<td style="text-align: left;">人物反差</td>
+<td style="text-align: left;">禁欲系天花板</td>
+<td style="text-align: left;">中</td>
+<td style="text-align: left;">AI提取了部分人设，但未概括出反差机制本身。</td>
+</tr>
+<tr>
+<td style="text-align: left;">命运抗争</td>
+<td style="text-align: left;">绝境翻盘逆转</td>
+<td style="text-align: left;">中</td>
+<td style="text-align: left;">AI偏向剧情爽点描述，未完整覆盖抗争主题。</td>
+</tr>
+<tr>
+<td style="text-align: left;">英雄救美</td>
+<td style="text-align: left;">(无)</td>
+<td style="text-align: left;">无</td>
+<td style="text-align: left;">AI遗漏了救美这一关键动作桥段。</td>
+</tr>
+<tr>
+<td style="text-align: left;">地位悬殊的爱情</td>
+<td style="text-align: left;">跨阶级恋情</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">准确覆盖了悬殊关系概念。</td>
+</tr>
+<tr>
+<td style="text-align: left;">姐弟恋</td>
+<td style="text-align: left;">姐弟恋_年下攻略</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">匹配度极高。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="2-top5_16">2. 非核心坏标签TOP5举例</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">人工标签</th>
+<th style="text-align: left;">AI匹配标签</th>
+<th style="text-align: left;">匹配度</th>
+<th style="text-align: left;">问题说明</th>
+<th>根因分析</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">道德困境</td>
+<td style="text-align: left;">(无)</td>
+<td style="text-align: left;">无</td>
+<td style="text-align: left;">缺乏伦理压力描述。</td>
+<td>AI未能提取价值抉择相关的内容属性。</td>
+</tr>
+<tr>
+<td style="text-align: left;">\N</td>
+<td style="text-align: left;">(无)</td>
+<td style="text-align: left;">无</td>
+<td style="text-align: left;">(人工占位符)</td>
+<td>数据结构中的空值，无法匹配。</td>
+</tr>
+<tr>
+<td style="text-align: left;">爱情修罗场</td>
+<td style="text-align: left;">欢喜冤家_相爱相杀</td>
+<td style="text-align: left;">低</td>
+<td style="text-align: left;">关系涵盖不全。</td>
+<td>相爱相杀仅体现了双方冲突，未覆盖多方情感竞争。</td>
+</tr>
+<tr>
+<td style="text-align: left;">圆满结局</td>
+<td style="text-align: left;">开放式结局_留白</td>
+<td style="text-align: left;">低</td>
+<td style="text-align: left;">结局分类相反。</td>
+<td>AI对剧情结局性质判断出现严重事实冲突。</td>
+</tr>
+<tr>
+<td style="text-align: left;">13岁以上</td>
+<td style="text-align: left;">限制级_18岁以上成人_R级</td>
+<td style="text-align: left;">低</td>
+<td style="text-align: left;">适龄分级判断错误。</td>
+<td>AI严重高估了内容的限制级别。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="3_6">3. 其他问题</h4>
+<ul>
+<li>幻觉标签问题：AI生成了“谍战_潜伏_间谍”、“军营_训练基地”、“家国情怀_民族精神”标签，将民国爱情短剧发散为了宏大军事题材。生成了“现象级网络小说改编”、“平台品质精选认证”、“微博热搜霸榜”，属于无客观依据的成绩与来源判断。</li>
+<li>噪声等级：高</li>
+</ul>
+<h3 id="869">案例8：《秀儿大战僵尸》（69分）</h3>
+<h4 id="1-vs-ai_17">1. 核心标签对比（人工 vs AI）</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">人工标签</th>
+<th style="text-align: left;">AI匹配标签</th>
+<th style="text-align: left;">匹配质量</th>
+<th style="text-align: left;">评价说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">解说实况</td>
+<td style="text-align: left;">微短剧_横屏</td>
+<td style="text-align: left;">低</td>
+<td style="text-align: left;">内容形态定位完全错误。</td>
+</tr>
+<tr>
+<td style="text-align: left;">策略游戏</td>
+<td style="text-align: left;">(无)</td>
+<td style="text-align: left;">无</td>
+<td style="text-align: left;">完全遗漏了核心游戏类型。</td>
+</tr>
+<tr>
+<td style="text-align: left;">奇幻</td>
+<td style="text-align: left;">科幻奇幻</td>
+<td style="text-align: left;">中</td>
+<td style="text-align: left;">AI将奇幻落点在末日废土，产生了语境差异。</td>
+</tr>
+<tr>
+<td style="text-align: left;">活力满满</td>
+<td style="text-align: left;">(无)</td>
+<td style="text-align: left;">无</td>
+<td style="text-align: left;">AI未提取低幼向正能量情绪标签。</td>
+</tr>
+<tr>
+<td style="text-align: left;">好奇</td>
+<td style="text-align: left;">(无)</td>
+<td style="text-align: left;">无</td>
+<td style="text-align: left;">AI未提取面向低龄受众的探索标签。</td>
+</tr>
+<tr>
+<td style="text-align: left;">僵尸</td>
+<td style="text-align: left;">丧尸_病毒末日</td>
+<td style="text-align: left;">中</td>
+<td style="text-align: left;">命中实体词，但错放在了生化危机剧集语境中。</td>
+</tr>
+<tr>
+<td style="text-align: left;">益智</td>
+<td style="text-align: left;">(无)</td>
+<td style="text-align: left;">无</td>
+<td style="text-align: left;">未识别出游戏的益智属性。</td>
+</tr>
+<tr>
+<td style="text-align: left;">僵尸</td>
+<td style="text-align: left;">丧尸_病毒末日</td>
+<td style="text-align: left;">中</td>
+<td style="text-align: left;">实体识别伴随语境错位。</td>
+</tr>
+<tr>
+<td style="text-align: left;">解说实况</td>
+<td style="text-align: left;">解说视频二次传播潜力大</td>
+<td style="text-align: left;">低</td>
+<td style="text-align: left;">AI将其视为营销标签而非内容主体标签。</td>
+</tr>
+<tr>
+<td style="text-align: left;">策略游戏</td>
+<td style="text-align: left;">(无)</td>
+<td style="text-align: left;">无</td>
+<td style="text-align: left;">游戏形态信息完全缺失。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="2-top5_17">2. 非核心坏标签TOP5举例</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">人工标签</th>
+<th style="text-align: left;">AI匹配标签</th>
+<th style="text-align: left;">匹配度</th>
+<th style="text-align: left;">问题说明</th>
+<th>根因分析</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">轻快</td>
+<td style="text-align: left;">沙雕爆笑_腹肌缺失</td>
+<td style="text-align: left;">低</td>
+<td style="text-align: left;">基调方向判断错误。</td>
+<td>AI将低幼的轻快情绪套用了成人化的荒诞幽默。</td>
+</tr>
+<tr>
+<td style="text-align: left;">快乐</td>
+<td style="text-align: left;">大团圆_HE结局</td>
+<td style="text-align: left;">低</td>
+<td style="text-align: left;">情绪属性与剧情属性混淆。</td>
+<td>受内容形态误判影响，AI输出了剧情结局而非体验词汇。</td>
+</tr>
+<tr>
+<td style="text-align: left;">10～12岁</td>
+<td style="text-align: left;">大学生_18至23岁</td>
+<td style="text-align: left;">低</td>
+<td style="text-align: left;">受众年龄层严重错位。</td>
+<td>AI将少儿受众判断成了成年大学生。</td>
+</tr>
+<tr>
+<td style="text-align: left;">7～9岁</td>
+<td style="text-align: left;">初入职场青年_23至28岁</td>
+<td style="text-align: left;">低</td>
+<td style="text-align: left;">受众画像存在事实级偏差。</td>
+<td>AI完全忽视了节目的低龄受众属性。</td>
+</tr>
+<tr>
+<td style="text-align: left;">(无其他有效坏标签)</td>
+<td style="text-align: left;">-</td>
+<td style="text-align: left;">-</td>
+<td style="text-align: left;">-</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h4 id="3_7">3. 其他问题</h4>
+<ul>
+<li>幻觉标签问题：基于将游戏解说误判为短剧集的前提，AI臆造了“草根逆袭_废材觉醒”、“阶级壁垒与贫富差距”、“反乌托邦_极权批判”等严重的脱离内容的社会学与网文标签。</li>
+<li>噪声等级：高</li>
+</ul>
+<h3 id="969">案例9：《三生有幸遇上你》（69分）</h3>
+<h4 id="1-vs-ai_18">1. 核心标签对比（人工 vs AI）</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">人工标签</th>
+<th style="text-align: left;">AI匹配标签</th>
+<th style="text-align: left;">匹配质量</th>
+<th style="text-align: left;">评价说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">爱情</td>
+<td style="text-align: left;">爱情_言情</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">核心流派匹配完全一致。</td>
+</tr>
+<tr>
+<td style="text-align: left;">紧张</td>
+<td style="text-align: left;">(无)</td>
+<td style="text-align: left;">无</td>
+<td style="text-align: left;">AI侧重搞笑标签，未提取紧张氛围词汇。</td>
+</tr>
+<tr>
+<td style="text-align: left;">兜兜转转相爱</td>
+<td style="text-align: left;">双向奔赴_势均力敌</td>
+<td style="text-align: left;">中</td>
+<td style="text-align: left;">都描述了最终的相爱状态，对过程描述不同。</td>
+</tr>
+<tr>
+<td style="text-align: left;">霸道总裁爱上我-现代版</td>
+<td style="text-align: left;">奶狗暖男_温柔系</td>
+<td style="text-align: left;">低</td>
+<td style="text-align: left;">AI提取的男主人设与霸道总裁方向相反。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="2-top5_18">2. 非核心坏标签TOP5举例</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">人工标签</th>
+<th style="text-align: left;">AI匹配标签</th>
+<th style="text-align: left;">匹配度</th>
+<th style="text-align: left;">问题说明</th>
+<th>根因分析</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">离奇变故</td>
+<td style="text-align: left;">(无)</td>
+<td style="text-align: left;">无</td>
+<td style="text-align: left;">剧情机制标签缺失。</td>
+<td>AI未能提取包含变故性质的剧情点。</td>
+</tr>
+<tr>
+<td style="text-align: left;">恋爱群像</td>
+<td style="text-align: left;">(无)</td>
+<td style="text-align: left;">无</td>
+<td style="text-align: left;">叙事范围提取较窄。</td>
+<td>AI仅识别了核心主角，未覆盖群像恋爱概念。</td>
+</tr>
+<tr>
+<td style="text-align: left;">情感与理智冲突</td>
+<td style="text-align: left;">(无)</td>
+<td style="text-align: left;">无</td>
+<td style="text-align: left;">内核标签缺失。</td>
+<td>AI未提炼出情感博弈相关的深度标签。</td>
+</tr>
+<tr>
+<td style="text-align: left;">线性叙事</td>
+<td style="text-align: left;">多线平行交织</td>
+<td style="text-align: left;">低</td>
+<td style="text-align: left;">叙事结构判定相反。</td>
+<td>AI对叙事脉络的判断存在事实冲突。</td>
+</tr>
+<tr>
+<td style="text-align: left;">女总裁</td>
+<td style="text-align: left;">高冷御姐_女王气场</td>
+<td style="text-align: left;">低</td>
+<td style="text-align: left;">职业身份提取不准。</td>
+<td>AI仅提取了气质描述，未识别具体的社会职业标签。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="3_8">3. 其他问题</h4>
+<ul>
+<li>幻觉标签问题：AI针对该现代都市剧生成了“含较多血腥暴力画面”的安全警告，并生造了“双重身份_特工伪装机制”、“主角开大一秒杀”等属于谍战或修仙流派的错位标签。</li>
+<li>噪声等级：中</li>
+</ul>
+<h3 id="10a-69">案例10：《哆啦A梦 第五季》（69分）</h3>
+<h4 id="1-vs-ai_19">1. 核心标签对比（人工 vs AI）</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">人工标签</th>
+<th style="text-align: left;">AI匹配标签</th>
+<th style="text-align: left;">匹配质量</th>
+<th style="text-align: left;">评价说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">亲情</td>
+<td style="text-align: left;">亲子关系_代际矛盾</td>
+<td style="text-align: left;">中</td>
+<td style="text-align: left;">AI具象为了矛盾词汇，存在粒度差异。</td>
+</tr>
+<tr>
+<td style="text-align: left;">儿童</td>
+<td style="text-align: left;">全年龄_合家欢</td>
+<td style="text-align: left;">中</td>
+<td style="text-align: left;">方向一致但泛化了核心儿童群体。</td>
+</tr>
+<tr>
+<td style="text-align: left;">友情</td>
+<td style="text-align: left;">(无)</td>
+<td style="text-align: left;">无</td>
+<td style="text-align: left;">AI未能提取体现IP核心的伙伴标签。</td>
+</tr>
+<tr>
+<td style="text-align: left;">奇幻</td>
+<td style="text-align: left;">科幻奇幻</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">核心分类判断准确。</td>
+</tr>
+<tr>
+<td style="text-align: left;">幽默搞笑</td>
+<td style="text-align: left;">搞笑氛围担当</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">情绪词汇基本一致。</td>
+</tr>
+<tr>
+<td style="text-align: left;">无厘头</td>
+<td style="text-align: left;">误会不断_将错就错</td>
+<td style="text-align: left;">中</td>
+<td style="text-align: left;">同属喜剧表现手法，侧重点不同。</td>
+</tr>
+<tr>
+<td style="text-align: left;">快乐</td>
+<td style="text-align: left;">轻松解压_爆米花</td>
+<td style="text-align: left;">中</td>
+<td style="text-align: left;">体验维度一致，词汇表述不同。</td>
+</tr>
+<tr>
+<td style="text-align: left;">哆啦A梦小剧场</td>
+<td style="text-align: left;">(无)</td>
+<td style="text-align: left;">无</td>
+<td style="text-align: left;">专属IP概念缺失。</td>
+</tr>
+<tr>
+<td style="text-align: left;">动画</td>
+<td style="text-align: left;">动画</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">形态判断完全一致。</td>
+</tr>
+<tr>
+<td style="text-align: left;">科幻</td>
+<td style="text-align: left;">科幻</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">题材判断完全一致。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="2-top5_19">2. 非核心坏标签TOP5举例</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">人工标签</th>
+<th style="text-align: left;">AI匹配标签</th>
+<th style="text-align: left;">匹配度</th>
+<th style="text-align: left;">问题说明</th>
+<th>根因分析</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">好奇</td>
+<td style="text-align: left;">(无)</td>
+<td style="text-align: left;">无</td>
+<td style="text-align: left;">缺乏动机标签。</td>
+<td>AI未体现与未知探索相关的情绪词。</td>
+</tr>
+<tr>
+<td style="text-align: left;">搭档</td>
+<td style="text-align: left;">核心CP关系模式</td>
+<td style="text-align: left;">低</td>
+<td style="text-align: left;">关系定义严重跑偏。</td>
+<td>AI将单纯的搭档模式曲解为了言情化的CP关系。</td>
+</tr>
+<tr>
+<td style="text-align: left;">圆满结局</td>
+<td style="text-align: left;">轮回结局_周而复始</td>
+<td style="text-align: left;">低</td>
+<td style="text-align: left;">基调判断失误。</td>
+<td>AI将日常单元剧的重复特征误判为了宿命轮回。</td>
+</tr>
+<tr>
+<td style="text-align: left;">萌娃</td>
+<td style="text-align: left;">萌物治愈瞬间</td>
+<td style="text-align: left;">低</td>
+<td style="text-align: left;">主体对象混淆。</td>
+<td>萌娃指人类幼崽，AI用萌物代指了非人类动物对象。</td>
+</tr>
+<tr>
+<td style="text-align: left;">7～12岁</td>
+<td style="text-align: left;">全年龄_合家欢</td>
+<td style="text-align: left;">低</td>
+<td style="text-align: left;">粒度差异过大。</td>
+<td>AI无法准确定位具体的少儿阶段。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="3_9">3. 其他问题</h4>
+<ul>
+<li>幻觉标签问题：AI输出了“底层抱团取暖”、“草根逆袭_废材觉醒”、“存在主义_生死哲学”等与合家欢儿童动画极度违和的网文及沉重社会标签，并将女主形容为“小白花_初恋脸_白月光”。</li>
+<li>噪声等级：高</li>
+</ul>
+<h2 id="_4">四、站内新热节目案例分析</h2>
+<h3 id="178">案例1：《解密》（78分）</h3>
+<h4 id="1-vs-ai_20">1. 核心标签对比（人工 vs AI）</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">人工标签</th>
+<th style="text-align: left;">AI匹配标签</th>
+<th style="text-align: left;">匹配质量</th>
+<th style="text-align: left;">评价说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">谍战</td>
+<td style="text-align: left;">谍战_潜伏_间谍</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">完全一致，识别了核心题材。</td>
+</tr>
+<tr>
+<td style="text-align: left;">悬疑</td>
+<td style="text-align: left;">悬疑</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">核心流派匹配完全对应。</td>
+</tr>
+<tr>
+<td style="text-align: left;">男性传奇</td>
+<td style="text-align: left;">人物传记_真实改编</td>
+<td style="text-align: left;">中</td>
+<td style="text-align: left;">识别了单人物主线，但未点出性别传奇色彩。</td>
+</tr>
+<tr>
+<td style="text-align: left;">鸿篇巨制</td>
+<td style="text-align: left;">S级_现象级超级大制作</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">准确传达了影片制作体量。</td>
+</tr>
+<tr>
+<td style="text-align: left;">烧脑</td>
+<td style="text-align: left;">烧脑费神_智力挑战</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">表述高度一致。</td>
+</tr>
+<tr>
+<td style="text-align: left;">情报破译</td>
+<td style="text-align: left;">信息战_情报对抗</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">准确识别了核心事件动作。</td>
+</tr>
+<tr>
+<td style="text-align: left;">智斗博弈</td>
+<td style="text-align: left;">高智商博弈对弈</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">标签匹配度完全一致。</td>
+</tr>
+<tr>
+<td style="text-align: left;">大制作</td>
+<td style="text-align: left;">亿元以上级别制作</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">标签语义等同且量化清晰。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="2-top5_20">2. 非核心标签TOP5举例</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">人工标签</th>
+<th style="text-align: left;">AI匹配标签</th>
+<th style="text-align: left;">匹配度</th>
+<th style="text-align: left;">评价说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">间谍类/间谍</td>
+<td style="text-align: left;">谍战_潜伏_间谍</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">语义完全对齐。</td>
+</tr>
+<tr>
+<td style="text-align: left;">13岁以上</td>
+<td style="text-align: left;">适合13岁以上青少年_PG13级</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">内容分级识别准确。</td>
+</tr>
+<tr>
+<td style="text-align: left;">神秘诡谲</td>
+<td style="text-align: left;">意识流_主观体验</td>
+<td style="text-align: left;">中</td>
+<td style="text-align: left;">AI用意识流指代了影片中梦境的诡谲感。</td>
+</tr>
+<tr>
+<td style="text-align: left;">震撼</td>
+<td style="text-align: left;">史诗厚重_宏大感</td>
+<td style="text-align: left;">中</td>
+<td style="text-align: left;">宏大感与震撼体验方向一致。</td>
+</tr>
+<tr>
+<td style="text-align: left;">谜团丛生</td>
+<td style="text-align: left;">结局解读众说纷纭</td>
+<td style="text-align: left;">中</td>
+<td style="text-align: left;">AI通过结果侧面体现了剧情的谜团属性。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="3_10">3. 整体评价</h4>
+<p>《解密》的AI标签质量处于合格中等水平。相比高分案例，AI在捕捉谍战、破译、大制作等核心宏观事实上表现准确，但在人物特质等细节上存在一定颗粒度差距，属于具有可用性但需人工微调的状态。</p>
+<h3 id="280">案例2：《黑夜告白》（80分）</h3>
+<h4 id="1-vs-ai_21">1. 核心标签对比（人工 vs AI）</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">人工标签</th>
+<th style="text-align: left;">AI匹配标签</th>
+<th style="text-align: left;">匹配质量</th>
+<th style="text-align: left;">评价说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">犯罪</td>
+<td style="text-align: left;">犯罪</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">流派判断完全一致。</td>
+</tr>
+<tr>
+<td style="text-align: left;">悬疑</td>
+<td style="text-align: left;">悬疑</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">流派判断完全一致。</td>
+</tr>
+<tr>
+<td style="text-align: left;">友情</td>
+<td style="text-align: left;">双男主_兄弟情bromance</td>
+<td style="text-align: left;">中</td>
+<td style="text-align: left;">兄弟情属于友情范畴，存在表述上的网感差异。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="2-top5_21">2. 非核心标签TOP5举例</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">人工标签</th>
+<th style="text-align: left;">AI匹配标签</th>
+<th style="text-align: left;">匹配度</th>
+<th style="text-align: left;">评价说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">刑侦</td>
+<td style="text-align: left;">刑警_特警日常</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">明确指向了警察办案题材。</td>
+</tr>
+<tr>
+<td style="text-align: left;">警匪</td>
+<td style="text-align: left;">黑白两道对立</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">标签释义与警匪核心内涵对齐。</td>
+</tr>
+<tr>
+<td style="text-align: left;">感人</td>
+<td style="text-align: left;">情感共鸣全网集体哭泣</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">AI使用网络词汇抓住了催泪属性。</td>
+</tr>
+<tr>
+<td style="text-align: left;">血腥暴力</td>
+<td style="text-align: left;">含较多血腥暴力画面</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">准确识别出限制级内容。</td>
+</tr>
+<tr>
+<td style="text-align: left;">恐惧</td>
+<td style="text-align: left;">含惊恐画面_恐怖元素</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">惊恐元素表达高度一致。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="3_11">3. 整体评价</h4>
+<p>《黑夜告白》的AI标签质量整体表现良好。AI未出现严重的事实错误或幻觉噪声，且在网感化表达（如情感共鸣说明）上表现出较强的运营补充价值，整体水平优于一般的低分冗余样本。</p>
+<h3 id="379">案例3：《月鳞绮纪》（79分）</h3>
+<h4 id="1-vs-ai_22">1. 核心标签对比（人工 vs AI）</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">人工标签</th>
+<th style="text-align: left;">AI匹配标签</th>
+<th style="text-align: left;">匹配质量</th>
+<th style="text-align: left;">评价说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">奇幻</td>
+<td style="text-align: left;">奇幻_玄幻</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">完全命中核心类型。</td>
+</tr>
+<tr>
+<td style="text-align: left;">爱情</td>
+<td style="text-align: left;">爱情_言情</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">类型定位完全一致。</td>
+</tr>
+<tr>
+<td style="text-align: left;">视听盛宴</td>
+<td style="text-align: left;">千万级视效特效</td>
+<td style="text-align: left;">中</td>
+<td style="text-align: left;">AI从制作成本和视效颗粒度体现了盛宴概念。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="2-top5_22">2. 非核心标签TOP5举例</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">人工标签</th>
+<th style="text-align: left;">AI匹配标签</th>
+<th style="text-align: left;">匹配度</th>
+<th style="text-align: left;">评价说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">鸿篇巨制</td>
+<td style="text-align: left;">S级_现象级超级大制作</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">均传达了作品大体量特征。</td>
+</tr>
+<tr>
+<td style="text-align: left;">古风</td>
+<td style="text-align: left;">古典雅致_东方美学</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">AI通过美学标签表达了古风调性。</td>
+</tr>
+<tr>
+<td style="text-align: left;">强情节</td>
+<td style="text-align: left;">剧情关键转折集_强情节驱动</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">捕捉到了强情节特征。</td>
+</tr>
+<tr>
+<td style="text-align: left;">命运抗争</td>
+<td style="text-align: left;">自由意志与命运</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">价值观主题对齐准确。</td>
+</tr>
+<tr>
+<td style="text-align: left;">虐恋</td>
+<td style="text-align: left;">虐恋情深</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">细分题材完全一致。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="3_12">3. 整体评价</h4>
+<p>《月鳞绮纪》的AI标签质量达到了常规基线水平。AI在古装奇幻言情类目下能够稳定输出准确的流派、美学及剧情体验标签，没有发生明显的语义偏离问题。</p>
+<h3 id="486">案例4：《重案解密》（86分）</h3>
+<h4 id="1-vs-ai_23">1. 核心标签对比（人工 vs AI）</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">人工标签</th>
+<th style="text-align: left;">AI匹配标签</th>
+<th style="text-align: left;">匹配质量</th>
+<th style="text-align: left;">评价说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">悬疑</td>
+<td style="text-align: left;">悬疑</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">语义完全一致。</td>
+</tr>
+<tr>
+<td style="text-align: left;">犯罪</td>
+<td style="text-align: left;">犯罪</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">语义完全一致。</td>
+</tr>
+<tr>
+<td style="text-align: left;">涉案</td>
+<td style="text-align: left;">警察局_刑警队_审讯室</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">AI通过场景和流派组合覆盖了涉案属性。</td>
+</tr>
+<tr>
+<td style="text-align: left;">强情节</td>
+<td style="text-align: left;">全程高能_快节奏密集</td>
+<td style="text-align: left;">中</td>
+<td style="text-align: left;">AI从节奏角度表达了情节紧凑度。</td>
+</tr>
+<tr>
+<td style="text-align: left;">血腥暴力</td>
+<td style="text-align: left;">含较多血腥暴力画面</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">内容属性识别准确。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="2-top5_23">2. 非核心标签TOP5举例</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">人工标签</th>
+<th style="text-align: left;">AI匹配标签</th>
+<th style="text-align: left;">匹配度</th>
+<th style="text-align: left;">评价说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">刑侦</td>
+<td style="text-align: left;">法医_刑侦技术</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">准确细化为了相关职业技术标签。</td>
+</tr>
+<tr>
+<td style="text-align: left;">推理</td>
+<td style="text-align: left;">社会派推理</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">在推理基础上增加了社会派流派定语。</td>
+</tr>
+<tr>
+<td style="text-align: left;">猎奇</td>
+<td style="text-align: left;">诡异猎奇_重口味</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">标签词汇完全契合。</td>
+</tr>
+<tr>
+<td style="text-align: left;">紧张刺激</td>
+<td style="text-align: left;">紧张刺激_肾上腺素</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">情绪词汇完全一致。</td>
+</tr>
+<tr>
+<td style="text-align: left;">紧张</td>
+<td style="text-align: left;">紧张刺激_肾上腺素</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">情绪词汇合并对应准确。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="3_13">3. 整体评价</h4>
+<p>《重案解密》的AI标签质量较高。它在犯罪悬疑题材中表现出了细致的下钻能力（如法医技术、社会派推理），体现了AI在垂直题材中提取结构化元素的稳定性。</p>
+<h3 id="590">案例5：《凤凰台上》（90分）</h3>
+<h4 id="1-vs-ai_24">1. 核心标签对比（人工 vs AI）</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">人工标签</th>
+<th style="text-align: left;">AI匹配标签</th>
+<th style="text-align: left;">匹配质量</th>
+<th style="text-align: left;">评价说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">武侠</td>
+<td style="text-align: left;">武侠</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">完全匹配一级题材。</td>
+</tr>
+<tr>
+<td style="text-align: left;">爱情</td>
+<td style="text-align: left;">爱情_言情</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">完全匹配一级题材。</td>
+</tr>
+<tr>
+<td style="text-align: left;">狗血</td>
+<td style="text-align: left;">复仇爱情_恩怨纠缠</td>
+<td style="text-align: left;">中</td>
+<td style="text-align: left;">AI使用恩怨纠缠等词汇替代了口语化的狗血特征。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="2-top5_24">2. 非核心标签TOP5举例</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">人工标签</th>
+<th style="text-align: left;">AI匹配标签</th>
+<th style="text-align: left;">匹配度</th>
+<th style="text-align: left;">评价说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">紧张刺激</td>
+<td style="text-align: left;">紧张刺激_肾上腺素</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">核心情绪完全一致。</td>
+</tr>
+<tr>
+<td style="text-align: left;">悲伤</td>
+<td style="text-align: left;">悲伤催泪_虐心</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">情绪指向对齐。</td>
+</tr>
+<tr>
+<td style="text-align: left;">虐心</td>
+<td style="text-align: left;">悲伤催泪_虐心</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">情绪指向对齐。</td>
+</tr>
+<tr>
+<td style="text-align: left;">爱恨交织</td>
+<td style="text-align: left;">欢喜冤家_相爱相杀</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">相爱相杀对应了交织的内涵。</td>
+</tr>
+<tr>
+<td style="text-align: left;">突然背叛</td>
+<td style="text-align: left;">表面盟友实则背刺</td>
+<td style="text-align: left;">高</td>
+<td style="text-align: left;">背刺精准对应了背叛行为。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="3_14">3. 整体评价</h4>
+<p>《凤凰台上》获得了90的高分，体现出AI在新热古装剧集标签解析上的优异表现。相比低分节目，其标签完全规避了题材错配的幻觉风险，并在核心情节桥段（背刺、相杀）上实现了高颗粒度的命中。</p>
+</div>
+<script>
+  (function() {
+    const bar = document.getElementById('progressBar');
+    function updateProgress() {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      bar.style.width = pct + '%';
+    }
+    window.addEventListener('scroll', updateProgress);
+    updateProgress();
+  })();
+</script>
+</body>
+</html>
