@@ -5,126 +5,251 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI标签质量评估报告</title>
 <style>
-  :root {
-    --primary: #2563eb;
-    --primary-light: #dbeafe;
-    --text: #1f2937;
-    --text-secondary: #6b7280;
-    --bg: #ffffff;
-    --bg-alt: #f8fafc;
-    --border: #e5e7eb;
-    --radius: 8px;
+:root {
+  --primary: #2563eb;
+  --primary-light: #dbeafe;
+  --text: #1f2937;
+  --text-secondary: #6b7280;
+  --bg: #ffffff;
+  --bg-alt: #f8fafc;
+  --border: #e5e7eb;
+  --sidebar-bg: #f1f5f9;
+  --radius: 8px;
+  --sidebar-w: 280px;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans SC", sans-serif;
+  color: var(--text);
+  background: var(--bg-alt);
+  line-height: 1.7;
+  display: flex;
+}
+.progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), #60a5fa);
+  width: 0%;
+  z-index: 1000;
+  transition: width 0.1s;
+}
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--sidebar-w);
+  height: 100vh;
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  padding: 24px 16px 40px;
+  z-index: 100;
+}
+.sidebar-header {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1e3a8a;
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--primary);
+}
+.sidebar ul {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 12px;
+}
+.sidebar .toc-root {
+  padding-left: 0;
+}
+.sidebar li {
+  margin: 4px 0;
+}
+.sidebar a {
+  display: block;
+  padding: 5px 8px;
+  border-radius: 6px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  transition: all 0.15s;
+  border-left: 3px solid transparent;
+}
+.sidebar a:hover {
+  background: #e2e8f0;
+  color: var(--text);
+}
+.sidebar a.active {
+  background: var(--primary-light);
+  color: var(--primary);
+  border-left-color: var(--primary);
+  font-weight: 600;
+}
+/* Main content */
+.main {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  min-width: 0;
+}
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 40px 32px;
+  background: var(--bg);
+  min-height: 100vh;
+  box-shadow: 0 0 40px rgba(0,0,0,0.04);
+}
+h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5em;
+  padding-bottom: 0.4em;
+  border-bottom: 3px solid var(--primary);
+  color: #111827;
+}
+h2 {
+  font-size: 1.5rem;
+  margin-top: 2em;
+  margin-bottom: 0.6em;
+  color: #1e40af;
+  padding-left: 12px;
+  border-left: 4px solid var(--primary);
+}
+h3 {
+  font-size: 1.2rem;
+  margin-top: 1.6em;
+  color: #1f2937;
+}
+h4 {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin-top: 1.2em;
+}
+p { margin: 0.8em 0; }
+a { color: var(--primary); text-decoration: none; }
+a:hover { text-decoration: underline; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1em 0;
+  font-size: 0.92rem;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+th, td {
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+}
+th {
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+  font-weight: 600;
+  color: #1e3a8a;
+}
+tr:nth-child(even) { background: #f9fafb; }
+tr:hover { background: #eff6ff; transition: background 0.2s; }
+ul, ol { padding-left: 1.4em; }
+li { margin: 0.3em 0; }
+code {
+  background: #f3f4f6;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.88em;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, monospace;
+}
+blockquote {
+  margin: 1em 0;
+  padding: 0.8em 1.2em;
+  background: #fffbeb;
+  border-left: 4px solid #f59e0b;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  color: #92400e;
+}
+/* Mobile */
+.sidebar-toggle {
+  display: none;
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 200;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+@media (max-width: 900px) {
+  body { display: block; }
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.25s;
+    box-shadow: 4px 0 20px rgba(0,0,0,0.12);
   }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans SC", sans-serif;
-    color: var(--text);
-    background: var(--bg-alt);
-    line-height: 1.7;
-  }
-  .container {
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 40px 24px;
-    background: var(--bg);
-    min-height: 100vh;
-    box-shadow: 0 0 40px rgba(0,0,0,0.04);
-  }
-  h1 {
-    font-size: 2rem;
-    margin-bottom: 0.5em;
-    padding-bottom: 0.4em;
-    border-bottom: 3px solid var(--primary);
-    color: #111827;
-  }
-  h2 {
-    font-size: 1.5rem;
-    margin-top: 2em;
-    margin-bottom: 0.6em;
-    color: #1e40af;
-    padding-left: 12px;
-    border-left: 4px solid var(--primary);
-  }
-  h3 {
-    font-size: 1.2rem;
-    margin-top: 1.6em;
-    color: #1f2937;
-  }
-  h4 {
-    font-size: 1rem;
-    color: var(--text-secondary);
-    margin-top: 1.2em;
-  }
-  p { margin: 0.8em 0; }
-  a { color: var(--primary); text-decoration: none; }
-  a:hover { text-decoration: underline; }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 1em 0;
-    font-size: 0.92rem;
-    border-radius: var(--radius);
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-  }
-  th, td {
-    padding: 10px 14px;
-    border: 1px solid var(--border);
-    text-align: left;
-    vertical-align: top;
-  }
-  th {
-    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
-    font-weight: 600;
-    color: #1e3a8a;
-  }
-  tr:nth-child(even) { background: #f9fafb; }
-  tr:hover { background: #eff6ff; transition: background 0.2s; }
-  ul, ol { padding-left: 1.4em; }
-  li { margin: 0.3em 0; }
-  code {
-    background: #f3f4f6;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-size: 0.88em;
-    font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, monospace;
-  }
-  blockquote {
-    margin: 1em 0;
-    padding: 0.8em 1.2em;
-    background: #fffbeb;
-    border-left: 4px solid #f59e0b;
-    border-radius: 0 var(--radius) var(--radius) 0;
-    color: #92400e;
-  }
-  .progress-bar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 3px;
-    background: linear-gradient(90deg, var(--primary), #60a5fa);
-    width: 0%;
-    z-index: 1000;
-    transition: width 0.1s;
-  }
-  @media (max-width: 768px) {
-    .container { padding: 20px 14px; }
-    h1 { font-size: 1.5rem; }
-    h2 { font-size: 1.2rem; }
-    table { font-size: 0.85rem; }
-    th, td { padding: 8px 10px; }
-  }
+  .sidebar.open { transform: translateX(0); }
+  .main { margin-left: 0; }
+  .container { padding: 56px 16px 24px; }
+  .sidebar-toggle { display: block; }
+}
 </style>
 </head>
 <body>
 <div class="progress-bar" id="progressBar"></div>
+<button class="sidebar-toggle" id="sidebarToggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">目录</button>
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">目录</div>
+  <ul class="toc-root">
+<li><a href="#一-整体评估" data-target="一-整体评估">一、整体评估</a></li>
+<li><a href="#二-高分节目案例分析" data-target="二-高分节目案例分析">二、高分节目案例分析</a></li>
+<ul>
+<li><a href="#案例1-圆桌派-第二季-99分" data-target="案例1-圆桌派-第二季-99分">案例1：《圆桌派 第二季》（99分）</a></li>
+<li><a href="#案例2-七根心简-99分" data-target="案例2-七根心简-99分">案例2：《七根心简》（99分）</a></li>
+<li><a href="#案例3-甄嬛传-98分" data-target="案例3-甄嬛传-98分">案例3：《甄嬛传》（98分）</a></li>
+<li><a href="#案例4-扫黑行动-95分" data-target="案例4-扫黑行动-95分">案例4：《扫黑行动》（95分）</a></li>
+<li><a href="#案例5-大厨小婿-94分" data-target="案例5-大厨小婿-94分">案例5：《大厨小婿》（94分）</a></li>
+<li><a href="#案例6-无限超越班-94分" data-target="案例6-无限超越班-94分">案例6：《无限超越班》（94分）</a></li>
+<li><a href="#案例7-鬼灭之刃-94分" data-target="案例7-鬼灭之刃-94分">案例7：《鬼灭之刃》（94分）</a></li>
+<li><a href="#案例8-乡村爱情-93分" data-target="案例8-乡村爱情-93分">案例8：《乡村爱情》（93分）</a></li>
+<li><a href="#案例9-绿皮书-92分" data-target="案例9-绿皮书-92分">案例9：《绿皮书》（92分）</a></li>
+<li><a href="#案例10-欢乐颂2-92分" data-target="案例10-欢乐颂2-92分">案例10：《欢乐颂2》（92分）</a></li>
+</ul>
+<li><a href="#三-低分节目案例分析" data-target="三-低分节目案例分析">三、低分节目案例分析</a></li>
+<ul>
+<li><a href="#案例1-掌心-66分" data-target="案例1-掌心-66分">案例1：《掌心》（66分）</a></li>
+<li><a href="#案例2-许你浮生若梦-67分" data-target="案例2-许你浮生若梦-67分">案例2：《许你浮生若梦》（67分）</a></li>
+<li><a href="#案例3-大蛇5-怪兽都市-68分" data-target="案例3-大蛇5-怪兽都市-68分">案例3：《大蛇5：怪兽都市》（68分）</a></li>
+<li><a href="#案例4-狒狒养龙记-68分" data-target="案例4-狒狒养龙记-68分">案例4：《狒狒养龙记》（68分）</a></li>
+<li><a href="#案例5-捷德奥特曼-中配版-68分" data-target="案例5-捷德奥特曼-中配版-68分">案例5：《捷德奥特曼 中配版》（68分）</a></li>
+<li><a href="#案例6-相逢时节-68分" data-target="案例6-相逢时节-68分">案例6：《相逢时节》（68分）</a></li>
+<li><a href="#案例7-鹅绒雪-68分" data-target="案例7-鹅绒雪-68分">案例7：《鹅绒雪》（68分）</a></li>
+<li><a href="#案例8-秀儿大战僵尸-69分" data-target="案例8-秀儿大战僵尸-69分">案例8：《秀儿大战僵尸》（69分）</a></li>
+<li><a href="#案例9-三生有幸遇上你-69分" data-target="案例9-三生有幸遇上你-69分">案例9：《三生有幸遇上你》（69分）</a></li>
+<li><a href="#案例10-哆啦a梦-第五季-69分" data-target="案例10-哆啦a梦-第五季-69分">案例10：《哆啦A梦 第五季》（69分）</a></li>
+</ul>
+<li><a href="#四-站内新热节目案例分析" data-target="四-站内新热节目案例分析">四、站内新热节目案例分析</a></li>
+<ul>
+<li><a href="#案例1-解密-78分" data-target="案例1-解密-78分">案例1：《解密》（78分）</a></li>
+<li><a href="#案例2-黑夜告白-80分" data-target="案例2-黑夜告白-80分">案例2：《黑夜告白》（80分）</a></li>
+<li><a href="#案例3-月鳞绮纪-79分" data-target="案例3-月鳞绮纪-79分">案例3：《月鳞绮纪》（79分）</a></li>
+<li><a href="#案例4-重案解密-86分" data-target="案例4-重案解密-86分">案例4：《重案解密》（86分）</a></li>
+<li><a href="#案例5-凤凰台上-90分" data-target="案例5-凤凰台上-90分">案例5：《凤凰台上》（90分）</a></li>
+</ul>
+</ul>
+</aside>
+<main class="main">
 <div class="container">
 <h1 id="ai">AI标签质量评估报告</h1>
-<h2 id="_1">一、整体评估</h2>
+<h2 id="_1" id="一-整体评估">一、整体评估</h2>
 <p>本次评估样本量总计1457个。整体平均得分为82.9分，其中最高分达到100分，最低分为66分。在得分分布方面，高分节目共有338个，中等分节目826个，低分节目293个。整体来看，AI标签在多数节目中能够达到合格匹配水平，但高分与低分节目在核心概念提取准确率及事实判定上存在客观差异。</p>
-<h2 id="_2">二、高分节目案例分析</h2>
-<h3 id="1-99">案例1：《圆桌派 第二季》（99分）</h3>
+<h2 id="_2" id="二-高分节目案例分析">二、高分节目案例分析</h2>
+<h3 id="1-99" id="案例1-圆桌派-第二季-99分">案例1：《圆桌派 第二季》（99分）</h3>
 <h4 id="1-vs-ai">1. 核心标签对比（人工 vs AI）</h4>
 <table>
 <thead>
@@ -229,7 +354,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="299">案例2：《七根心简》（99分）</h3>
+<h3 id="299" id="案例2-七根心简-99分">案例2：《七根心简》（99分）</h3>
 <h4 id="1-vs-ai_1">1. 核心标签对比（人工 vs AI）</h4>
 <table>
 <thead>
@@ -316,7 +441,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="398">案例3：《甄嬛传》（98分）</h3>
+<h3 id="398" id="案例3-甄嬛传-98分">案例3：《甄嬛传》（98分）</h3>
 <h4 id="1-vs-ai_2">1. 核心标签对比（人工 vs AI）</h4>
 <table>
 <thead>
@@ -409,7 +534,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="495">案例4：《扫黑行动》（95分）</h3>
+<h3 id="495" id="案例4-扫黑行动-95分">案例4：《扫黑行动》（95分）</h3>
 <h4 id="1-vs-ai_3">1. 核心标签对比（人工 vs AI）</h4>
 <table>
 <thead>
@@ -514,7 +639,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="594">案例5：《大厨小婿》（94分）</h3>
+<h3 id="594" id="案例5-大厨小婿-94分">案例5：《大厨小婿》（94分）</h3>
 <h4 id="1-vs-ai_4">1. 核心标签对比（人工 vs AI）</h4>
 <table>
 <thead>
@@ -589,7 +714,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="694">案例6：《无限超越班》（94分）</h3>
+<h3 id="694" id="案例6-无限超越班-94分">案例6：《无限超越班》（94分）</h3>
 <h4 id="1-vs-ai_5">1. 核心标签对比（人工 vs AI）</h4>
 <table>
 <thead>
@@ -694,7 +819,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="794">案例7：《鬼灭之刃》（94分）</h3>
+<h3 id="794" id="案例7-鬼灭之刃-94分">案例7：《鬼灭之刃》（94分）</h3>
 <h4 id="1-vs-ai_6">1. 核心标签对比（人工 vs AI）</h4>
 <table>
 <thead>
@@ -799,7 +924,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="893">案例8：《乡村爱情》（93分）</h3>
+<h3 id="893" id="案例8-乡村爱情-93分">案例8：《乡村爱情》（93分）</h3>
 <h4 id="1-vs-ai_7">1. 核心标签对比（人工 vs AI）</h4>
 <table>
 <thead>
@@ -892,7 +1017,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="992">案例9：《绿皮书》（92分）</h3>
+<h3 id="992" id="案例9-绿皮书-92分">案例9：《绿皮书》（92分）</h3>
 <h4 id="1-vs-ai_8">1. 核心标签对比（人工 vs AI）</h4>
 <table>
 <thead>
@@ -997,7 +1122,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="10292">案例10：《欢乐颂2》（92分）</h3>
+<h3 id="10292" id="案例10-欢乐颂2-92分">案例10：《欢乐颂2》（92分）</h3>
 <h4 id="1-vs-ai_9">1. 核心标签对比（人工 vs AI）</h4>
 <table>
 <thead>
@@ -1084,8 +1209,8 @@
 </tr>
 </tbody>
 </table>
-<h2 id="_3">三、低分节目案例分析</h2>
-<h3 id="166">案例1：《掌心》（66分）</h3>
+<h2 id="_3" id="三-低分节目案例分析">三、低分节目案例分析</h2>
+<h3 id="166" id="案例1-掌心-66分">案例1：《掌心》（66分）</h3>
 <h4 id="1-vs-ai_10">1. 核心标签对比（人工 vs AI）</h4>
 <table>
 <thead>
@@ -1189,7 +1314,7 @@
 <li>幻觉标签问题：AI产生了“地下世界_废弃工厂”标签，与古风设定严重事实冲突；产生了“极致反差滑稽”与“寻求治愈缓解现实焦虑”等缺乏人工标签依据的情绪标签。</li>
 <li>噪声等级：中</li>
 </ul>
-<h3 id="267">案例2：《许你浮生若梦》（67分）</h3>
+<h3 id="267" id="案例2-许你浮生若梦-67分">案例2：《许你浮生若梦》（67分）</h3>
 <h4 id="1-vs-ai_11">1. 核心标签对比（人工 vs AI）</h4>
 <table>
 <thead>
@@ -1293,7 +1418,7 @@
 <li>幻觉标签问题：AI生成了“扫黑除恶”、“近代革命_红色历史”、“谍战_潜伏_间谍”等标签，与民国爱情剧的实际类型严重不符。产生了“微博热搜霸榜”、“五毛特效”等未经证实的传播效果或主观评价标签。</li>
 <li>噪声等级：高</li>
 </ul>
-<h3 id="3568">案例3：《大蛇5：怪兽都市》（68分）</h3>
+<h3 id="3568" id="案例3-大蛇5-怪兽都市-68分">案例3：《大蛇5：怪兽都市》（68分）</h3>
 <h4 id="1-vs-ai_12">1. 核心标签对比（人工 vs AI）</h4>
 <table>
 <thead>
@@ -1403,7 +1528,7 @@
 <li>幻觉标签问题：AI生成了“极难植入_严肃历史_硬科幻”、“科技伦理_AI威胁与机遇”等标签，与B级网络怪兽电影的事实严重不符。</li>
 <li>噪声等级：高</li>
 </ul>
-<h3 id="468">案例4：《狒狒养龙记》（68分）</h3>
+<h3 id="468" id="案例4-狒狒养龙记-68分">案例4：《狒狒养龙记》（68分）</h3>
 <h4 id="1-vs-ai_13">1. 核心标签对比（人工 vs AI）</h4>
 <table>
 <thead>
@@ -1519,7 +1644,7 @@
 <li>幻觉标签问题：AI判定该内容为“微短剧_横屏”以及包含“大女主_成长过程型”剧情，与游戏解说实况的属性存在根本冲突。生成了“含较多血腥暴力画面”标签，严重错判了儿童向内容的安全分级。</li>
 <li>噪声等级：高</li>
 </ul>
-<h3 id="5-68">案例5：《捷德奥特曼 中配版》（68分）</h3>
+<h3 id="5-68" id="案例5-捷德奥特曼-中配版-68分">案例5：《捷德奥特曼 中配版》（68分）</h3>
 <h4 id="1-vs-ai_14">1. 核心标签对比（人工 vs AI）</h4>
 <table>
 <thead>
@@ -1635,7 +1760,7 @@
 <li>幻觉标签问题：AI生成了“极易植入_现代都市职场”与“职场_办公室_格子间”标签，对特摄剧的场景与商业模式进行了完全脱离事实的臆造判断。</li>
 <li>噪声等级：中</li>
 </ul>
-<h3 id="668">案例6：《相逢时节》（68分）</h3>
+<h3 id="668" id="案例6-相逢时节-68分">案例6：《相逢时节》（68分）</h3>
 <h4 id="1-vs-ai_15">1. 核心标签对比（人工 vs AI）</h4>
 <table>
 <thead>
@@ -1733,7 +1858,7 @@
 <li>幻觉标签问题：AI输出了“大团圆_HE结局”，与该剧包含角色入狱等复杂结局事实严重冲突。输出了“含较多血腥暴力画面”与“病娇_极端执念_偏执迷恋”，不符合当代都市正剧的内容事实。</li>
 <li>噪声等级：中</li>
 </ul>
-<h3 id="768">案例7：《鹅绒雪》（68分）</h3>
+<h3 id="768" id="案例7-鹅绒雪-68分">案例7：《鹅绒雪》（68分）</h3>
 <h4 id="1-vs-ai_16">1. 核心标签对比（人工 vs AI）</h4>
 <table>
 <thead>
@@ -1855,7 +1980,7 @@
 <li>幻觉标签问题：AI生成了“谍战_潜伏_间谍”、“军营_训练基地”、“家国情怀_民族精神”标签，将民国爱情短剧发散为了宏大军事题材。生成了“现象级网络小说改编”、“平台品质精选认证”、“微博热搜霸榜”，属于无客观依据的成绩与来源判断。</li>
 <li>噪声等级：高</li>
 </ul>
-<h3 id="869">案例8：《秀儿大战僵尸》（69分）</h3>
+<h3 id="869" id="案例8-秀儿大战僵尸-69分">案例8：《秀儿大战僵尸》（69分）</h3>
 <h4 id="1-vs-ai_17">1. 核心标签对比（人工 vs AI）</h4>
 <table>
 <thead>
@@ -1983,7 +2108,7 @@
 <li>幻觉标签问题：基于将游戏解说误判为短剧集的前提，AI臆造了“草根逆袭_废材觉醒”、“阶级壁垒与贫富差距”、“反乌托邦_极权批判”等严重的脱离内容的社会学与网文标签。</li>
 <li>噪声等级：高</li>
 </ul>
-<h3 id="969">案例9：《三生有幸遇上你》（69分）</h3>
+<h3 id="969" id="案例9-三生有幸遇上你-69分">案例9：《三生有幸遇上你》（69分）</h3>
 <h4 id="1-vs-ai_18">1. 核心标签对比（人工 vs AI）</h4>
 <table>
 <thead>
@@ -2075,7 +2200,7 @@
 <li>幻觉标签问题：AI针对该现代都市剧生成了“含较多血腥暴力画面”的安全警告，并生造了“双重身份_特工伪装机制”、“主角开大一秒杀”等属于谍战或修仙流派的错位标签。</li>
 <li>噪声等级：中</li>
 </ul>
-<h3 id="10a-69">案例10：《哆啦A梦 第五季》（69分）</h3>
+<h3 id="10a-69" id="案例10-哆啦a梦-第五季-69分">案例10：《哆啦A梦 第五季》（69分）</h3>
 <h4 id="1-vs-ai_19">1. 核心标签对比（人工 vs AI）</h4>
 <table>
 <thead>
@@ -2203,8 +2328,8 @@
 <li>幻觉标签问题：AI输出了“底层抱团取暖”、“草根逆袭_废材觉醒”、“存在主义_生死哲学”等与合家欢儿童动画极度违和的网文及沉重社会标签，并将女主形容为“小白花_初恋脸_白月光”。</li>
 <li>噪声等级：高</li>
 </ul>
-<h2 id="_4">四、站内新热节目案例分析</h2>
-<h3 id="178">案例1：《解密》（78分）</h3>
+<h2 id="_4" id="四-站内新热节目案例分析">四、站内新热节目案例分析</h2>
+<h3 id="178" id="案例1-解密-78分">案例1：《解密》（78分）</h3>
 <h4 id="1-vs-ai_20">1. 核心标签对比（人工 vs AI）</h4>
 <table>
 <thead>
@@ -2311,7 +2436,7 @@
 </table>
 <h4 id="3_10">3. 整体评价</h4>
 <p>《解密》的AI标签质量处于合格中等水平。相比高分案例，AI在捕捉谍战、破译、大制作等核心宏观事实上表现准确，但在人物特质等细节上存在一定颗粒度差距，属于具有可用性但需人工微调的状态。</p>
-<h3 id="280">案例2：《黑夜告白》（80分）</h3>
+<h3 id="280" id="案例2-黑夜告白-80分">案例2：《黑夜告白》（80分）</h3>
 <h4 id="1-vs-ai_21">1. 核心标签对比（人工 vs AI）</h4>
 <table>
 <thead>
@@ -2388,7 +2513,7 @@
 </table>
 <h4 id="3_11">3. 整体评价</h4>
 <p>《黑夜告白》的AI标签质量整体表现良好。AI未出现严重的事实错误或幻觉噪声，且在网感化表达（如情感共鸣说明）上表现出较强的运营补充价值，整体水平优于一般的低分冗余样本。</p>
-<h3 id="379">案例3：《月鳞绮纪》（79分）</h3>
+<h3 id="379" id="案例3-月鳞绮纪-79分">案例3：《月鳞绮纪》（79分）</h3>
 <h4 id="1-vs-ai_22">1. 核心标签对比（人工 vs AI）</h4>
 <table>
 <thead>
@@ -2465,7 +2590,7 @@
 </table>
 <h4 id="3_12">3. 整体评价</h4>
 <p>《月鳞绮纪》的AI标签质量达到了常规基线水平。AI在古装奇幻言情类目下能够稳定输出准确的流派、美学及剧情体验标签，没有发生明显的语义偏离问题。</p>
-<h3 id="486">案例4：《重案解密》（86分）</h3>
+<h3 id="486" id="案例4-重案解密-86分">案例4：《重案解密》（86分）</h3>
 <h4 id="1-vs-ai_23">1. 核心标签对比（人工 vs AI）</h4>
 <table>
 <thead>
@@ -2554,7 +2679,7 @@
 </table>
 <h4 id="3_13">3. 整体评价</h4>
 <p>《重案解密》的AI标签质量较高。它在犯罪悬疑题材中表现出了细致的下钻能力（如法医技术、社会派推理），体现了AI在垂直题材中提取结构化元素的稳定性。</p>
-<h3 id="590">案例5：《凤凰台上》（90分）</h3>
+<h3 id="590" id="案例5-凤凰台上-90分">案例5：《凤凰台上》（90分）</h3>
 <h4 id="1-vs-ai_24">1. 核心标签对比（人工 vs AI）</h4>
 <table>
 <thead>
@@ -2632,18 +2757,55 @@
 <h4 id="3_14">3. 整体评价</h4>
 <p>《凤凰台上》获得了90的高分，体现出AI在新热古装剧集标签解析上的优异表现。相比低分节目，其标签完全规避了题材错配的幻觉风险，并在核心情节桥段（背刺、相杀）上实现了高颗粒度的命中。</p>
 </div>
+</main>
 <script>
-  (function() {
-    const bar = document.getElementById('progressBar');
-    function updateProgress() {
-      const scrollTop = window.scrollY || document.documentElement.scrollTop;
-      const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-      bar.style.width = pct + '%';
+(function() {
+  // Progress bar
+  const bar = document.getElementById('progressBar');
+  function updateProgress() {
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    bar.style.width = (docHeight > 0 ? (scrollTop / docHeight) * 100 : 0) + '%';
+  }
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+
+  // Active TOC highlighting on scroll
+  const headings = Array.from(document.querySelectorAll('h2[id], h3[id]'));
+  const tocLinks = Array.from(document.querySelectorAll('.sidebar a[data-target]'));
+  const sidebar = document.getElementById('sidebar');
+
+  let currentActive = null;
+  function highlight() {
+    let best = null;
+    const offset = 80;
+    for (const h of headings) {
+      if (h.getBoundingClientRect().top <= offset) best = h;
+      else break;
     }
-    window.addEventListener('scroll', updateProgress);
-    updateProgress();
-  })();
+    const targetId = best ? best.id : (headings[0] ? headings[0].id : null);
+    if (!targetId) return;
+    if (currentActive === targetId) return;
+    currentActive = targetId;
+    tocLinks.forEach(a => {
+      if (a.dataset.target === targetId) {
+        a.classList.add('active');
+        a.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      } else {
+        a.classList.remove('active');
+      }
+    });
+  }
+  window.addEventListener('scroll', highlight, { passive: true });
+  highlight();
+
+  // Close mobile sidebar on click
+  tocLinks.forEach(a => {
+    a.addEventListener('click', () => {
+      if (window.innerWidth <= 900) sidebar.classList.remove('open');
+    });
+  });
+})();
 </script>
 </body>
 </html>
